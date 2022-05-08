@@ -1,45 +1,77 @@
-class PLUS_INF():
-    pass
+"""
+Defines symbols for extension to +/- infinity and related methods.
+"""
 
 
-class MINUS_INF():
-    pass
+class PlusInf:  # noqa: PLR0903
+    """
+    Symbolic constant for "+infinity"
+    """
 
 
-def isSymbol(value):
-    return value is PLUS_INF or value is MINUS_INF
+class MinusInf:  # noqa: PLR0903
+    """
+    Symbolic constant for "-infinity"
+    """
+
+
+def is_symbol(value):
+    """
+    Return True if the value is a symbolic constant.
+    """
+    return value is PlusInf or value is MinusInf
 
 
 # extensions of in/equality comparisons to R+infinities:
 
-def xEquals(v1, v2):
-    if v1 is PLUS_INF:
-        return v2 is PLUS_INF
-    elif v1 is MINUS_INF:
-        return v2 is MINUS_INF
-    else:
-        return v1 == v2
 
-def xGt(v1, v2):
-    if v1 is PLUS_INF:
-        return not (v2 is PLUS_INF)
-    elif v1 is MINUS_INF:
+def x_equals(val1, val2):
+    """
+    Equality, extended
+    """
+    if val1 is PlusInf:  # noqa: PLR1705
+        return val2 is PlusInf
+    elif val1 is MinusInf:
+        return val2 is MinusInf
+    else:
+        return val1 == val2
+
+
+def x_gt(val1, val2):
+    """
+    Greater-than, extended
+    """
+    if val1 is PlusInf:  # noqa: PLR1705
+        return val2 is not PlusInf
+    elif val1 is MinusInf:
         return False
     else:
-        # v1 is a regular number:
-        if v2 is PLUS_INF:
+        # val1 is a regular number:
+        if val2 is PlusInf:  # noqa: PLR1705
             return False
-        elif v2 is MINUS_INF:
+        elif val2 is MinusInf:
             return True
         else:
             # both are numbers
-            return v1 > v2
+            return val1 > val2
 
-def xLt(v1, v2):
-    return xGt(v2, v1)
 
-def xGe(v1, v2):
-    return xEquals(v1, v2) or xGt(v1, v2)
+def x_lt(val1, val2):
+    """
+    Less-than, extended
+    """
+    return x_gt(val2, val1)  # noqa: PLW1114
 
-def xLe(v1, v2):
-    return xEquals(v1, v2) or xLt(v1, v2)
+
+def x_ge(val1, val2):
+    """
+    Greater-or-equal, extended
+    """
+    return x_equals(val1, val2) or x_gt(val1, val2)
+
+
+def x_le(val1, val2):
+    """
+    Less-or-equal, extended
+    """
+    return x_equals(val1, val2) or x_lt(val1, val2)

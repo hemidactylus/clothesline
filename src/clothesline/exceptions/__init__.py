@@ -1,3 +1,10 @@
+"""
+Specific exceptions for the project.
+"""
+
+
 class InvalidValueError(ValueError):
-    def __init__(self, msg):
-        super().__init__(msg)
+    """
+    An attempt to build an object (e.g. IntervalPeg) with invalid
+    or inconsistent values.
+    """

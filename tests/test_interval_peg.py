@@ -21,6 +21,20 @@ class TestIntervalPeg(unittest.TestCase):
         with self.assertRaises(InvalidValueError):
             IntervalPeg(MinusInf, True)
 
+    def test_hashable_pegs(self):
+        """Hashability and equality tests"""
+        self.assertTrue(IntervalPeg(0.0, True) == IntervalPeg(0.0, True))
+        self.assertTrue(IntervalPeg(PlusInf, False) == IntervalPeg(PlusInf, False))
+        self.assertFalse(IntervalPeg(PlusInf, False) == IntervalPeg(0.0, True))
+        self.assertFalse(IntervalPeg(0.0, False) == IntervalPeg(0.0, True))
+        self.assertFalse(IntervalPeg(0.0, False) == IntervalPeg(1.0, False))
+        #
+        self.assertTrue(len({
+            IntervalPeg(1.0 + 1.0, True),
+            IntervalPeg(2., True),
+            IntervalPeg(PlusInf, False),
+            IntervalPeg(PlusInf, not True),
+        }) == 2)
 
 if __name__ == "__main__":
     unittest.main()

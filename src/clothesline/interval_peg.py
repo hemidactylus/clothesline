@@ -32,3 +32,6 @@ class IntervalPeg:
             return self.included == other.included
         else:
             return False
+
+    def __hash__(self):
+        return hash((self.value, self.included))

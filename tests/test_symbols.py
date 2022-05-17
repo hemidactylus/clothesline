@@ -81,6 +81,19 @@ class TestSymbols(unittest.TestCase):
         self.assertFalse(x_le(PlusInf, MinusInf))
         self.assertFalse(x_le(PlusInf, 0.0))
 
+    def test_hashable(self):
+        """Hashability and equality tests"""
+        self.assertTrue(PlusInf == PlusInf)
+        self.assertFalse(PlusInf == MinusInf)
+        self.assertFalse(PlusInf == 0.0)
+        #
+        self.assertTrue(len({
+            PlusInf,
+            MinusInf,
+            PlusInf,
+            2.0,
+            1.0 + 1.0,
+        }) == 3)
 
 if __name__ == "__main__":
     unittest.main()

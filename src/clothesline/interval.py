@@ -4,7 +4,7 @@ A single interval with a begin and and end, either open or closed at its ends.
 
 from clothesline import IntervalPeg
 from clothesline.symbols import PlusInf, MinusInf
-from clothesline.symbols import is_symbol, x_equals, x_lt, x_gt
+from clothesline.symbols import is_symbol, x_equals, x_lt, x_gt, x_repr
 
 #
 from clothesline.exceptions import InvalidValueError
@@ -26,6 +26,9 @@ class Interval:
         """
         if x_gt(begin.value, end.value):
             raise InvalidValueError("Interval begin must come before its end")
+        if x_equals(begin.value, end.value):
+            if begin.included != end.included:
+                raise InvalidValueError("Contradicting inclusion for point-like interval")
         self.begin = begin
         self.end = end
 
@@ -65,8 +68,10 @@ class Interval:
                     # value to the left of begin
                     return False
 
-    def __eq__(self, other):
-        return self.begin == other.begin and self.end == other.end
+    def pegs(self):
+        """Return the two ends, iterably."""
+        yield self.begin
+        yield self.end
 
     @staticmethod
     def open(value_begin, value_end):
@@ -137,3 +142,16 @@ class Interval:
             IntervalPeg(value_begin, begin_included),
             IntervalPeg(value_end, end_included),
         )
+
+    def __eq__(self, other):
+        return self.begin == other.begin and self.end == other.end
+
+    def __hash__(self):
+        return hash((self.begin, self.end))
+
+    def __repr__(self):
+        beginName = x_repr(self.begin.value)
+        beginParen = '[' if self.begin.included else '('
+        endName = x_repr(self.end.value)
+        endParen = ']' if self.end.included else ')'
+        return f"{beginParen}{beginName}, {endName}{endParen}"

@@ -6,7 +6,7 @@ contributes to defining.
 from clothesline.exceptions import InvalidValueError
 
 from clothesline.symbols import is_symbol
-from clothesline.symbols import x_equals, x_gt, x_lt
+from clothesline.symbols import x_equals
 
 
 class IntervalPeg:

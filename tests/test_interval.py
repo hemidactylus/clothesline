@@ -19,16 +19,6 @@ class TestInterval(unittest.TestCase):
         """ways to generate invalid intervals"""
         with self.assertRaises(InvalidValueError):
             Interval(
-                IntervalPeg(0.0, True),
-                IntervalPeg(PlusInf, True),
-            )
-        with self.assertRaises(InvalidValueError):
-            Interval(
-                IntervalPeg(MinusInf, True),
-                IntervalPeg(0.0, False),
-            )
-        with self.assertRaises(InvalidValueError):
-            Interval(
                 IntervalPeg(1.0, False),
                 IntervalPeg(0.0, True),
             )

@@ -4,7 +4,7 @@ A single interval with a begin and and end, either open or closed at its ends.
 
 from clothesline import IntervalPeg
 from clothesline.symbols import PlusInf, MinusInf
-from clothesline.symbols import is_symbol, x_equals, x_lt
+from clothesline.symbols import is_symbol, x_equals, x_lt, x_gt
 
 #
 from clothesline.exceptions import InvalidValueError
@@ -24,7 +24,7 @@ class Interval:
         """
         begin and end are PegInterval instances
         """
-        if begin > end:
+        if x_gt(begin.value, end.value):
             raise InvalidValueError("Interval begin must come before its end")
         self.begin = begin
         self.end = end

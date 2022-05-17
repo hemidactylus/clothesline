@@ -13,6 +13,9 @@ class IntervalPeg:
     """
     A boundary value + indication of whether the value itself is
     included/excluded.
+
+    Note: inequalities among instances of this class make no sense,
+    whereas they do among their 'value' values.
     """
 
     value = None
@@ -29,20 +32,3 @@ class IntervalPeg:
             return self.included == other.included
         else:
             return False
-
-    def __gt__(self, other):
-        """
-        If same value, we consider that included comes "after" excluded
-        """
-        if x_gt(self.value, other.value):  # noqa: PLR1705
-            return True
-        elif x_lt(self.value, other.value):
-            return False
-        else:
-            if (not self.included) and other.included:  # noqa: PLR1703,PLR1705
-                return True
-            else:
-                return False
-
-    def __ge__(self, other):
-        return self == other or self > other

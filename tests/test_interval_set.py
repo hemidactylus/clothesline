@@ -71,7 +71,9 @@ class TestIntervalSet(unittest.TestCase):
 
     def test_equals(self):
         """Equality between interval sets."""
-        int_split_closed = IntervalSet([Interval.closed(10, 11), Interval.closed(11, 12)])
+        int_split_closed = IntervalSet(
+            [Interval.closed(10, 11), Interval.closed(11, 12)]
+        )
         int_whole_closed = IntervalSet([Interval.closed(10, 12)])
         self.assertTrue(int_split_closed == int_whole_closed)
         int_split_open = IntervalSet([Interval.open(10, 11), Interval.open(11, 12)])
@@ -79,7 +81,9 @@ class TestIntervalSet(unittest.TestCase):
         self.assertFalse(int_split_open == int_whole_open)
         int_wider_open = IntervalSet([Interval.open(10, 12.5)])
         self.assertFalse(int_whole_open == int_wider_open)
-        int_split_higher = IntervalSet([Interval.closed(10, 12), Interval.high_slice(11)])
+        int_split_higher = IntervalSet(
+            [Interval.closed(10, 12), Interval.high_slice(11)]
+        )
         int_whole_higher = IntervalSet([Interval.high_slice(10, True)])
         self.assertTrue(int_split_higher == int_whole_higher)
 
@@ -94,6 +98,7 @@ class TestIntervalSet(unittest.TestCase):
         self.assertFalse(self.is1.contains(15))
         self.assertTrue(self.is1.contains(20))
         self.assertFalse(self.is1.contains(PlusInf))
+
 
 if __name__ == "__main__":
     unittest.main()

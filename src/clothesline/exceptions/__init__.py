@@ -9,6 +9,7 @@ class InvalidValueError(ValueError):
     or inconsistent values.
     """
 
+
 class InvalidCombineEndState(ValueError):
     """
     An end state when closing the ''combine_intervals'

@@ -26,16 +26,19 @@ class IntervalSet:
         return any(interval.contains(value) for interval in self.intervals)
 
     def __eq__(self, other):
-        return len(self.intervals) == len(other.intervals) and self.intervals == other.intervals
+        return (
+            len(self.intervals) == len(other.intervals)
+            and self.intervals == other.intervals
+        )
 
     def __hash__(self, other):
         raise NotImplementedError
 
     def __repr__(self):
         if self.intervals == []:
-            return '{}'
+            return "{}"
         else:
-            return ' U '.join(interval.__repr__() for interval in self.intervals)
+            return " U ".join(interval.__repr__() for interval in self.intervals)
 
     @staticmethod
     def _normalize(intervals):
@@ -47,7 +50,9 @@ class IntervalSet:
         return combine_intervals([intervals])
 
     def __add__(self, other):
-        return IntervalSet(combine_intervals(
-            [self.intervals, other.intervals],
-            combiner_function=lambda q: q[0] or q[1],
-        ))
+        return IntervalSet(
+            combine_intervals(
+                [self.intervals, other.intervals],
+                combiner_function=lambda q: q[0] or q[1],
+            )
+        )

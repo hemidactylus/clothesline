@@ -9,7 +9,7 @@ from clothesline import Interval, IntervalPeg
 from clothesline.exceptions import InvalidCombineEndState
 
 
-def combine_intervals(interval_iterables, combiner_function = lambda q: q[0]):
+def combine_intervals(interval_iterables, combiner_function=lambda q: q[0]):
     """
     The main workhorse for interval algebra.
     A list of N iterables over intervals is combined according to some
@@ -42,10 +42,7 @@ def combine_intervals(interval_iterables, combiner_function = lambda q: q[0]):
     N > 2 will presumably never be used.
     """
 
-    interval_lists = [
-        list(interval_ite)
-        for interval_ite in interval_iterables
-    ]
+    interval_lists = [list(interval_ite) for interval_ite in interval_iterables]
     n_i_lists = len(interval_lists)
 
     # 1. 'split' phase
@@ -86,15 +83,19 @@ def combine_intervals(interval_iterables, combiner_function = lambda q: q[0]):
     point_merged = {marker: False for marker in markers}
     range_merged = {marker: False for marker in markers}
     for marker in markers:
-        point_merged[marker] = combiner_function([
-            point_included[marker].get(i_list_index, False)
-            for i_list_index in range(n_i_lists)
-        ])
+        point_merged[marker] = combiner_function(
+            [
+                point_included[marker].get(i_list_index, False)
+                for i_list_index in range(n_i_lists)
+            ]
+        )
     for marker in markers[:-1]:
-        range_merged[marker] = combiner_function([
-            range_included[marker].get(i_list_index, False)
-            for i_list_index in range(n_i_lists)
-        ])
+        range_merged[marker] = combiner_function(
+            [
+                range_included[marker].get(i_list_index, False)
+                for i_list_index in range(n_i_lists)
+            ]
+        )
 
     # # 3. 'merge' phase
     final_intervals = []
@@ -108,13 +109,15 @@ def combine_intervals(interval_iterables, combiner_function = lambda q: q[0]):
             else:
                 if point_included:
                     # this point, isolated, is a zero-length interval:
-                    final_intervals.append(Interval(
-                        IntervalPeg(marker, True),
-                        IntervalPeg(marker, True),
-                    ))
+                    final_intervals.append(
+                        Interval(
+                            IntervalPeg(marker, True),
+                            IntervalPeg(marker, True),
+                        )
+                    )
                 else:
                     # no-op
-                    pass                        
+                    pass
         else:
             # i_buffer exists already
             if next_is_range:
@@ -124,18 +127,22 @@ def combine_intervals(interval_iterables, combiner_function = lambda q: q[0]):
                 else:
                     # a hole: finalize/flush buffer and re-init it at once
                     i_buffer[1] = (marker, point_included)
-                    final_intervals.append(Interval(
-                        IntervalPeg(i_buffer[0][0], i_buffer[0][1]),
-                        IntervalPeg(i_buffer[1][0], i_buffer[1][1]),
-                    ))
+                    final_intervals.append(
+                        Interval(
+                            IntervalPeg(i_buffer[0][0], i_buffer[0][1]),
+                            IntervalPeg(i_buffer[1][0], i_buffer[1][1]),
+                        )
+                    )
                     i_buffer = [(marker, point_included), None]
             else:
                 # end of the interval being built: flush and reset buffer
                 i_buffer[1] = (marker, point_included)
-                final_intervals.append(Interval(
-                    IntervalPeg(i_buffer[0][0], i_buffer[0][1]),
-                    IntervalPeg(i_buffer[1][0], i_buffer[1][1]),
-                ))
+                final_intervals.append(
+                    Interval(
+                        IntervalPeg(i_buffer[0][0], i_buffer[0][1]),
+                        IntervalPeg(i_buffer[1][0], i_buffer[1][1]),
+                    )
+                )
                 i_buffer = None
     #
     if i_buffer is not None:

@@ -7,16 +7,20 @@ class PlusInf:  # noqa: PLR0903
     """
     Symbolic constant for "+infinity"
     """
+
     @staticmethod
-    def __repr__(): return '+inf'
+    def __repr__():
+        return "+inf"
 
 
 class MinusInf:  # noqa: PLR0903
     """
     Symbolic constant for "-infinity"
     """
+
     @staticmethod
-    def __repr__(): return '-inf'
+    def __repr__():
+        return "-inf"
 
 
 def is_symbol(value):
@@ -89,6 +93,7 @@ def x_le(val1, val2):
     Less-or-equal, extended
     """
     return x_equals(val1, val2) or x_lt(val1, val2)
+
 
 def x_repr(val):
     """

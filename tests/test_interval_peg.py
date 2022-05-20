@@ -29,12 +29,18 @@ class TestIntervalPeg(unittest.TestCase):
         self.assertFalse(IntervalPeg(0.0, False) == IntervalPeg(0.0, True))
         self.assertFalse(IntervalPeg(0.0, False) == IntervalPeg(1.0, False))
         #
-        self.assertTrue(len({
-            IntervalPeg(1.0 + 1.0, True),
-            IntervalPeg(2., True),
-            IntervalPeg(PlusInf, False),
-            IntervalPeg(PlusInf, not True),
-        }) == 2)
+        self.assertTrue(
+            len(
+                {
+                    IntervalPeg(1.0 + 1.0, True),
+                    IntervalPeg(2.0, True),
+                    IntervalPeg(PlusInf, False),
+                    IntervalPeg(PlusInf, not True),
+                }
+            )
+            == 2
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

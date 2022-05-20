@@ -28,7 +28,9 @@ class Interval:
             raise InvalidValueError("Interval begin must come before its end")
         if x_equals(begin.value, end.value):
             if begin.included != end.included:
-                raise InvalidValueError("Contradicting inclusion for point-like interval")
+                raise InvalidValueError(
+                    "Contradicting inclusion for point-like interval"
+                )
             if not begin.included and not end.included:
                 raise InvalidValueError("Empty point-like open set is invalid")
         self.begin = begin
@@ -156,7 +158,7 @@ class Interval:
 
     def __repr__(self):
         beginName = x_repr(self.begin.value)
-        beginParen = '[' if self.begin.included else '('
+        beginParen = "[" if self.begin.included else "("
         endName = x_repr(self.end.value)
-        endParen = ']' if self.end.included else ')'
+        endParen = "]" if self.end.included else ")"
         return f"{beginParen}{beginName}, {endName}{endParen}"

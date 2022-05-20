@@ -98,13 +98,19 @@ class TestSymbols(unittest.TestCase):
         self.assertFalse(PlusInf == MinusInf)
         self.assertFalse(PlusInf == 0.0)
         #
-        self.assertTrue(len({
-            PlusInf,
-            MinusInf,
-            PlusInf,
-            2.0,
-            1.0 + 1.0,
-        }) == 3)
+        self.assertTrue(
+            len(
+                {
+                    PlusInf,
+                    MinusInf,
+                    PlusInf,
+                    2.0,
+                    1.0 + 1.0,
+                }
+            )
+            == 3
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

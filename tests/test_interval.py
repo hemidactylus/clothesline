@@ -27,6 +27,11 @@ class TestInterval(unittest.TestCase):
                 IntervalPeg(0.0, False),
                 IntervalPeg(0.0, True),
             )
+        with self.assertRaises(InvalidValueError):
+            Interval(
+                IntervalPeg(0.0, False),
+                IntervalPeg(0.0, False),
+            )
 
     def test_creators(self):
         """ways to create intervals"""
@@ -89,11 +94,11 @@ class TestInterval(unittest.TestCase):
         self.assertTrue(i_ls_c.contains(-1.0))
         self.assertFalse(i_ls_c.contains(1.0))
         self.assertTrue(i_ls_c.contains(0.0))
-        self.assertTrue(i_ls_c.contains(MinusInf))
+        self.assertFalse(i_ls_c.contains(MinusInf))
         #
         self.assertTrue(i_all.contains(0.0))
-        self.assertTrue(i_all.contains(PlusInf))
-        self.assertTrue(i_all.contains(MinusInf))
+        self.assertFalse(i_all.contains(PlusInf))
+        self.assertFalse(i_all.contains(MinusInf))
         #
         self.assertFalse(i_int.contains(MinusInf))
         self.assertFalse(i_int.contains(-1.0))

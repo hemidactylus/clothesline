@@ -18,16 +18,24 @@ class IntervalSet:
         self.intervals = self._normalize(intervals)
 
     def contains(self, value):
-        raise NotImplementedError
+        """
+        Test whether a value belongs to the set.
+
+        Conventionally, infinities do not belong to any interval set.
+        """
+        return any(interval.contains(value) for interval in self.intervals)
 
     def __eq__(self, other):
-        raise NotImplementedError
+        return len(self.intervals) == len(other.intervals) and self.intervals == other.intervals
 
     def __hash__(self, other):
         raise NotImplementedError
 
     def __repr__(self):
-        return ' U '.join(interval.__repr__() for interval in self.intervals)
+        if self.intervals == []:
+            return '{}'
+        else:
+            return ' U '.join(interval.__repr__() for interval in self.intervals)
 
     @staticmethod
     def _normalize(intervals):
@@ -37,3 +45,9 @@ class IntervalSet:
         form of the generic combiner.
         """
         return combine_intervals([intervals])
+
+    def __add__(self, other):
+        return IntervalSet(combine_intervals(
+            [self.intervals, other.intervals],
+            combiner_function=lambda q: q[0] or q[1],
+        ))

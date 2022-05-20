@@ -9,7 +9,7 @@ from clothesline import Interval, IntervalPeg
 from clothesline.exceptions import InvalidCombineEndState
 
 
-def combine_intervals(interval_iterables):
+def combine_intervals(interval_iterables, combiner_function = lambda q: q[0]):
     """
     The main workhorse for interval algebra.
     A list of N iterables over intervals is combined according to some
@@ -46,6 +46,7 @@ def combine_intervals(interval_iterables):
         list(interval_ite)
         for interval_ite in interval_iterables
     ]
+    n_i_lists = len(interval_lists)
 
     # 1. 'split' phase
     markers = sorted(
@@ -81,15 +82,19 @@ def combine_intervals(interval_iterables):
                 marker = markers[m_index]
                 range_included[marker][i_list_index] = True
 
-    # 2. 'project' phase
+    # 2. 'project' phase, using combiner_function
     point_merged = {marker: False for marker in markers}
     range_merged = {marker: False for marker in markers}
     for marker in markers:
-        # this is specific to the one-/two-input op type. Here it's trivial
-        point_merged[marker] = point_included[marker].get(0, False)
+        point_merged[marker] = combiner_function([
+            point_included[marker].get(i_list_index, False)
+            for i_list_index in range(n_i_lists)
+        ])
     for marker in markers[:-1]:
-        # this is specific to the one-/two-input op type. Here it's trivial
-        range_merged[marker] = range_included[marker].get(0, False)
+        range_merged[marker] = combiner_function([
+            range_included[marker].get(i_list_index, False)
+            for i_list_index in range(n_i_lists)
+        ])
 
     # # 3. 'merge' phase
     final_intervals = []

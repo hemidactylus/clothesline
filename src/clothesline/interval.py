@@ -29,6 +29,8 @@ class Interval:
         if x_equals(begin.value, end.value):
             if begin.included != end.included:
                 raise InvalidValueError("Contradicting inclusion for point-like interval")
+            if not begin.included and not end.included:
+                raise InvalidValueError("Empty point-like open set is invalid")
         self.begin = begin
         self.end = end
 
@@ -36,14 +38,10 @@ class Interval:
         """
         Test whether a value belongs to the interval.
 
-        Infinities are allowed as 'value' argument
-        and e.g. conventionally (-INF, 0] contains -INF (and so on)
+        Infinities are allowed as 'value' argument, but never belong.
         """
         if is_symbol(value):
-            if value is PlusInf:  # noqa: PLR1705
-                return x_equals(self.end.value, value)
-            else:
-                return x_equals(self.begin.value, value)
+            return False
         else:
             # value is a regular number:
             if x_lt(self.begin.value, value):

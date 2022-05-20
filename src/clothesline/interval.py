@@ -98,6 +98,13 @@ class Interval:
         )
 
     @staticmethod
+    def point(value):
+        """
+        Create a zero-length degenerate [x, x] point-line 'interval'.
+        """
+        return Interval.closed(value, value)
+
+    @staticmethod
     def low_slice(value_end, included=False):
         """
         Create an interval from -inf to a certain value.

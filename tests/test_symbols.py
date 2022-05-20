@@ -2,11 +2,12 @@
 Tests for the symbols module
 """
 
+from functools import cmp_to_key
 import unittest
 
 from clothesline.symbols import PlusInf, MinusInf
 from clothesline.symbols import is_symbol
-from clothesline.symbols import x_equals, x_gt, x_lt, x_ge, x_le
+from clothesline.symbols import x_equals, x_gt, x_lt, x_ge, x_le, x_cmp
 
 
 class TestSymbols(unittest.TestCase):
@@ -80,6 +81,16 @@ class TestSymbols(unittest.TestCase):
         self.assertFalse(x_ge(0.0, PlusInf))
         self.assertFalse(x_le(PlusInf, MinusInf))
         self.assertFalse(x_le(PlusInf, 0.0))
+
+    def test_sorting(self):
+        s_key = cmp_to_key(x_cmp)
+        self.assertEqual(
+            sorted(
+                [1.0, PlusInf, 0.0, MinusInf, -1.0],
+                key=s_key,
+            ),
+            [MinusInf, -1.0, 0.0, 1.0, PlusInf],
+        )
 
     def test_hashable(self):
         """Hashability and equality tests"""

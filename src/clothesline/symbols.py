@@ -67,6 +67,16 @@ def x_lt(val1, val2):
     return x_gt(val2, val1)  # noqa: PLW1114
 
 
+def x_cmp(val1, val2):
+    """
+    a valid 'cmp' to use for sorting values-and-symbols
+    """
+    if x_equals(val1, val2):
+        return 0
+    else:
+        return -1 if x_lt(val1, val2) else +1
+
+
 def x_ge(val1, val2):
     """
     Greater-or-equal, extended

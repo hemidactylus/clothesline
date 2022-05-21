@@ -46,28 +46,16 @@ class TestIntervalSet(unittest.TestCase):
             Interval.closed(10, 14),
             Interval.high_slice(15),
         ]
-
-    def test_normalize(self):
-        """Normalization of input intervals when creating a set"""
-        self.assertEqual(
-            self.is1.intervals,
-            self.exp1_ints,
-        )
-        self.assertEqual(
-            self.is2.intervals,
-            self.exp2_ints,
-        )
-
-    def test_union(self):
-        """Union between IntervalSet instances."""
-        self.assertEqual(
-            (self.is1 + self.is2).intervals,
-            self.exp_u_ints,
-        )
-        self.assertEqual(
-            (self.is2 + self.is1).intervals,
-            self.exp_u_ints,
-        )
+        cls.isx1 = IntervalSet([
+            Interval.low_slice(-4),
+            Interval.closed(-3, -1),
+            Interval.interval(2, True, 3, False),
+        ])
+        cls.isx2 = IntervalSet([
+            Interval.interval(-5, True, -2, False),
+            Interval.interval(-1, False, 2, True),
+            Interval.high_slice(3),
+        ])
 
     def test_equals(self):
         """Equality between interval sets."""
@@ -99,6 +87,97 @@ class TestIntervalSet(unittest.TestCase):
         self.assertTrue(self.is1.contains(20))
         self.assertFalse(self.is1.contains(PlusInf))
 
+    def test_normalize(self):
+        """Normalization of input intervals when creating a set"""
+        self.assertEqual(
+            self.is1.intervals,
+            self.exp1_ints,
+        )
+        self.assertEqual(
+            self.is2.intervals,
+            self.exp2_ints,
+        )
+
+    def test_union(self):
+        """Union between IntervalSet instances."""
+        self.assertEqual(
+            (self.is1 + self.is2).intervals,
+            self.exp_u_ints,
+        )
+        self.assertEqual(
+            (self.is2 + self.is1).intervals,
+            self.exp_u_ints,
+        )
+
+    def test_difference(self):
+        """Difference between IntervalSet instances."""
+        self.assertEqual(
+            IntervalSet.open(-2, 2) - IntervalSet.open(-1, 1),
+            IntervalSet(
+                [
+                    Interval.interval(-2, False, -1, True),
+                    Interval.interval(1, True, 2, False),
+                ]
+            ),
+        )
+        self.assertEqual(
+            IntervalSet.open(5, 7)
+            - IntervalSet([Interval.open(5, 6), Interval.interval(6, True, 7, False)]),
+            IntervalSet.empty(),
+        )
+        self.assertEqual(
+            IntervalSet([Interval.open(5, 7)]) - IntervalSet([Interval.open(4, 8)]),
+            IntervalSet.empty(),
+        )
+
+    def test_intersection(self):
+        """Intersection between IntervalSet instances."""
+        self.assertEqual(
+            IntervalSet.open(0, 2).intersect(IntervalSet.open(1, 3)),
+            IntervalSet.open(1, 2),
+        )
+        self.assertEqual(
+            IntervalSet.closed(0, 1).intersect(IntervalSet.closed(2, 3)),
+            IntervalSet.empty(),
+        )
+        self.assertEqual(
+            IntervalSet.all().intersect(self.is1),
+            self.is1,
+        )
+        self.assertEqual(
+            IntervalSet.all().intersect(self.is2),
+            self.is2,
+        )
+
+    def test_xor(self):
+        """XOR between interval sets."""
+        x_exp = IntervalSet([
+            Interval.low_slice(-5),
+            Interval.interval(-4, True, -3, False),
+            Interval.interval(-2, True, 2, False),
+            Interval.open(2, 3),
+            Interval.high_slice(3),
+        ])
+        self.assertEqual(
+            self.isx1.xor(self.isx2),
+            x_exp,
+        )
+        self.assertEqual(
+            self.isx2.xor(self.isx1),
+            x_exp,
+        )
+
+    def test_complement(self):
+        """Complement of an interval set."""
+        c_exp = IntervalSet([
+            Interval.interval(-4, True, -3, False),
+            Interval.open(-1, 2),
+            Interval.high_slice(3, True),
+        ])
+        self.assertEqual(
+            self.isx1.complement(),
+            c_exp,
+        )
 
 if __name__ == "__main__":
     unittest.main()

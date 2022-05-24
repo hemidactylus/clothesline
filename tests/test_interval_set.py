@@ -90,22 +90,22 @@ class TestIntervalSet(unittest.TestCase):
     def test_normalize(self):
         """Normalization of input intervals when creating a set"""
         self.assertEqual(
-            self.is1.intervals,
+            self.is1._intervals,
             self.exp1_ints,
         )
         self.assertEqual(
-            self.is2.intervals,
+            self.is2._intervals,
             self.exp2_ints,
         )
 
     def test_union(self):
         """Union between IntervalSet instances."""
         self.assertEqual(
-            (self.is1 + self.is2).intervals,
+            (self.is1 + self.is2)._intervals,
             self.exp_u_ints,
         )
         self.assertEqual(
-            (self.is2 + self.is1).intervals,
+            (self.is2 + self.is1)._intervals,
             self.exp_u_ints,
         )
 

@@ -12,11 +12,11 @@ class IntervalSet:
     defined by an arbitrary (finite) number of Interval objects.
     """
 
-    intervals = None
+    _intervals = None
 
     def __init__(self, intervals):
         """`intervals` is a list of Interval instances."""
-        self.intervals = self._normalize(intervals)
+        self._intervals = self._normalize(intervals)
 
     @staticmethod
     def _normalize(intervals):
@@ -33,25 +33,26 @@ class IntervalSet:
 
         Conventionally, infinities do not belong to any interval set.
         """
-        return any(interval.contains(value) for interval in self.intervals)
+        return any(interval.contains(value) for interval in self._intervals)
 
     def __eq__(self, other):
         return (
-            len(self.intervals) == len(other.intervals)
-            and self.intervals == other.intervals
+            isinstance(other, IntervalSet)
+            and len(self._intervals) == len(other._intervals)
+            and self._intervals == other._intervals
         )
 
-    def __hash__(self, other):
+    def __hash__(self):
         return hash(tuple((
             hash(interval)
-            for interval in self.intervals
+            for interval in self._intervals
         )))
 
     def __repr__(self):
-        if self.intervals == []:
+        if self._intervals == []:
             return "{}"
         else:
-            return " U ".join(interval.__repr__() for interval in self.intervals)
+            return " U ".join(interval.__repr__() for interval in self._intervals)
 
     def __add__(self, other):
         """Alias for set-wise union."""
@@ -61,13 +62,18 @@ class IntervalSet:
         """Alias for set-wise difference."""
         return self.difference(other)
 
+    def intervals(self):
+        """Return an iterable over the intervals of this set."""
+        for interval in self._intervals:
+            yield interval
+
     def union(self, other):
         """
         Union of interval sets.
         """
         return IntervalSet(
             combine_intervals(
-                [self.intervals, other.intervals],
+                [self._intervals, other.intervals()],
                 combiner_function=lambda q: q[0] or q[1],
             )
         )
@@ -78,7 +84,7 @@ class IntervalSet:
         """
         return IntervalSet(
             combine_intervals(
-                [self.intervals, other.intervals],
+                [self._intervals, other.intervals()],
                 combiner_function=lambda q: q[0] and not q[1],
             )
         )
@@ -89,7 +95,7 @@ class IntervalSet:
         """
         return IntervalSet(
             combine_intervals(
-                [self.intervals, other.intervals],
+                [self._intervals, other.intervals()],
                 combiner_function=lambda q: q[0] and q[1],
             )
         )
@@ -100,7 +106,7 @@ class IntervalSet:
         """
         return IntervalSet(
             combine_intervals(
-                [self.intervals, other.intervals],
+                [self._intervals, other.intervals()],
                 combiner_function=lambda q: q[0] ^ q[1],
             )
         )

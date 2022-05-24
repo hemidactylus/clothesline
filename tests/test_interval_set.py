@@ -179,5 +179,52 @@ class TestIntervalSet(unittest.TestCase):
             c_exp,
         )
 
+    def test_spurious_equality(self):
+        """Interval is never IntervalSet."""
+        self.assertNotEqual(
+            Interval.open(0, 1),
+            IntervalSet.open(0, 1),
+        )
+
+    def test_hybrid_set_operations(self):
+        """Set-operations allowed with an Interval as second operand."""
+        iset = IntervalSet([Interval.open(-2, -1), Interval.high_slice(1)])
+        self.assertEqual(
+            iset + Interval.closed(-1, 1),
+            IntervalSet.high_slice(-2),
+        )
+        self.assertEqual(
+            iset - Interval.open(-3, 0),
+            IntervalSet.high_slice(1),
+        )
+        self.assertEqual(
+            iset.intersect(Interval.interval(1, True, 3, False)),
+            IntervalSet.open(1, 3),
+        )
+        self.assertEqual(
+            iset.xor(Interval.closed(-2, -1)),
+            IntervalSet([
+                Interval.point(-2),
+                Interval.point(-1),
+                Interval.high_slice(1),
+            ]),
+        )
+
+    def test_superset_of(self):
+        self.assertTrue(self.is1.superset_of(IntervalSet.empty()))
+        self.assertTrue(self.is1.superset_of(IntervalSet([
+            Interval.open(11, 12),
+        ])))
+        self.assertTrue(self.is1.superset_of(IntervalSet([
+            Interval.point(14),
+            Interval.closed(17, 19),
+        ])))
+        self.assertFalse(self.is1.superset_of(IntervalSet.point(13)))
+        self.assertFalse(self.is1.superset_of(IntervalSet([
+            Interval.open(11, 13),
+            Interval.closed(13, 14),
+        ])))
+
+
 if __name__ == "__main__":
     unittest.main()

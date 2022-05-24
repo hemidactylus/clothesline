@@ -73,6 +73,14 @@ class Interval:
         yield self.begin
         yield self.end
 
+    def intervals(self):
+        """
+        Return an 'iterable' over a single element, this interval.
+        This is only to enable quick-syntax for IntervalSet set-wise operations
+        whereby the second operand is a puny Interval.
+        """
+        yield self
+
     @staticmethod
     def open(value_begin, value_end):
         """
@@ -151,7 +159,10 @@ class Interval:
         )
 
     def __eq__(self, other):
-        return self.begin == other.begin and self.end == other.end
+        if isinstance(other, Interval):
+            return self.begin == other.begin and self.end == other.end
+        else:
+            return False
 
     def __hash__(self):
         return hash((self.begin, self.end))

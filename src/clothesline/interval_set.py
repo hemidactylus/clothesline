@@ -117,6 +117,10 @@ class IntervalSet:
         """
         return IntervalSet.all().difference(self)
 
+    def superset_of(self, other):
+        """Test whether another interval(set) is contained in this."""
+        return other - self == IntervalSet.empty()
+
     @staticmethod
     def empty():
         """

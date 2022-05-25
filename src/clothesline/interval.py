@@ -5,7 +5,7 @@ A single interval with a begin and and end, either open or closed at its ends.
 from clothesline import IntervalPeg
 from clothesline.symbols import PlusInf, MinusInf
 from clothesline.symbols import is_symbol, x_equals, x_lt, x_gt, x_repr
-
+from clothesline.interval_generic_builder import IntervalGenericBuilder
 #
 from clothesline.exceptions import InvalidValueError
 
@@ -35,6 +35,22 @@ class Interval:
                 raise InvalidValueError("Empty point-like open set is invalid")
         self.begin = begin
         self.end = end
+
+    def __eq__(self, other):
+        if isinstance(other, Interval):
+            return self.begin == other.begin and self.end == other.end
+        else:
+            return False
+
+    def __hash__(self):
+        return hash((self.begin, self.end))
+
+    def __repr__(self):
+        beginName = x_repr(self.begin.value)
+        beginParen = "[" if self.begin.included else "("
+        endName = x_repr(self.end.value)
+        endParen = "]" if self.end.included else ")"
+        return f"{beginParen}{beginName}, {endName}{endParen}"
 
     def contains(self, value):  # noqa: PLR0911
         """
@@ -158,18 +174,6 @@ class Interval:
             IntervalPeg(value_end, end_included),
         )
 
-    def __eq__(self, other):
-        if isinstance(other, Interval):
-            return self.begin == other.begin and self.end == other.end
-        else:
-            return False
-
-    def __hash__(self):
-        return hash((self.begin, self.end))
-
-    def __repr__(self):
-        beginName = x_repr(self.begin.value)
-        beginParen = "[" if self.begin.included else "("
-        endName = x_repr(self.end.value)
-        endParen = "]" if self.end.included else ")"
-        return f"{beginParen}{beginName}, {endName}{endParen}"
+    @staticmethod
+    def builder():
+        return IntervalGenericBuilder(finalizer=lambda pegs: Interval(*pegs))

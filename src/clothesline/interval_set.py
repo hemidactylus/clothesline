@@ -4,7 +4,7 @@ An arbitrary set defined by a finite number of intervals.
 
 from clothesline import Interval
 from clothesline.algebra import combine_intervals
-
+from clothesline.interval_generic_builder import IntervalGenericBuilder
 
 class IntervalSet:
     """
@@ -120,6 +120,13 @@ class IntervalSet:
     def superset_of(self, other):
         """Test whether another interval(set) is contained in this."""
         return other - self == IntervalSet.empty()
+
+    @staticmethod
+    def builder():
+        """
+        Create an IntervalSet builder.
+        """
+        return IntervalGenericBuilder(finalizer = lambda pegs: IntervalSet([Interval(*pegs)]))
 
     @staticmethod
     def empty():

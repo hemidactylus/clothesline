@@ -12,8 +12,6 @@ class IntervalSet:
     defined by an arbitrary (finite) number of Interval objects.
     """
 
-    _intervals = None
-
     def __init__(self, intervals):
         """`intervals` is a list of Interval instances."""
         self._intervals = self._normalize(intervals)

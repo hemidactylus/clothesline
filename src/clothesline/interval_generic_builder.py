@@ -3,7 +3,7 @@ A utility to provide a "builder" interface for intervals, interval sets etc.
 """
 
 from clothesline.symbols import PlusInf, MinusInf
-from clothesline import IntervalPeg
+from clothesline.interval_peg import IntervalPeg
 
 class IntervalGenericBuilder():
     """

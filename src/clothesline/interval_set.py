@@ -2,7 +2,7 @@
 An arbitrary set defined by a finite number of intervals.
 """
 
-from clothesline import Interval
+from clothesline.interval import Interval
 from clothesline.algebra import combine_intervals
 from clothesline.interval_generic_builder import IntervalGenericBuilder
 

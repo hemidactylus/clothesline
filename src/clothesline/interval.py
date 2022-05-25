@@ -2,7 +2,7 @@
 A single interval with a begin and and end, either open or closed at its ends.
 """
 
-from clothesline import IntervalPeg
+from clothesline.interval_peg import IntervalPeg
 from clothesline.symbols import PlusInf, MinusInf
 from clothesline.symbols import is_symbol, x_equals, x_lt, x_gt, x_repr
 from clothesline.interval_generic_builder import IntervalGenericBuilder

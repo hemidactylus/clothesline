@@ -4,7 +4,9 @@ Tests for the IntervalSet class
 
 import unittest
 
-from clothesline import IntervalSet, Interval, IntervalPeg
+from clothesline import IntervalSet
+from clothesline.interval_peg import IntervalPeg
+from clothesline.interval import Interval
 from clothesline.symbols import PlusInf, MinusInf
 
 

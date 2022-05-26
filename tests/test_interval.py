@@ -16,6 +16,15 @@ class TestInterval(unittest.TestCase):
     Tests for the Interval
     """
 
+    @classmethod
+    def setUpClass(cls):
+        cls.i_open = Interval.open(0.0, 1.0)
+        cls.i_closed = Interval.closed(0.0, 1.0)
+        cls.i_low_slice = Interval.low_slice(0.0)
+        cls.i_high_slice_c = Interval.high_slice(0.0, included=True)
+        cls.i_all = Interval.all()
+        cls.i_int = Interval.interval(0.0, True, 1.0, False)
+
     def test_invalids(self):
         """ways to generate invalid intervals"""
         with self.assertRaises(InvalidValueError):
@@ -36,49 +45,43 @@ class TestInterval(unittest.TestCase):
 
     def test_creators(self):
         """ways to create intervals"""
-        i_open = Interval.open(0.0, 1.0)
-        i_closed = Interval.closed(0.0, 1.0)
-        i_low_slice = Interval.low_slice(0.0)
-        i_high_slice_c = Interval.high_slice(0.0, included=True)
-        i_all = Interval.all()
-        i_int = Interval.interval(0.0, True, 1.0, False)
         self.assertEqual(
-            i_open,
+            self.i_open,
             Interval(
                 IntervalPeg(0.0, False),
                 IntervalPeg(1.0, False),
             ),
         )
         self.assertEqual(
-            i_closed,
+            self.i_closed,
             Interval(
                 IntervalPeg(0.0, True),
                 IntervalPeg(1.0, True),
             ),
         )
         self.assertEqual(
-            i_low_slice,
+            self.i_low_slice,
             Interval(
                 IntervalPeg(MinusInf, False),
                 IntervalPeg(0.0, False),
             ),
         )
         self.assertEqual(
-            i_high_slice_c,
+            self.i_high_slice_c,
             Interval(
                 IntervalPeg(0.0, True),
                 IntervalPeg(PlusInf, False),
             ),
         )
         self.assertEqual(
-            i_all,
+            self.i_all,
             Interval(
                 IntervalPeg(MinusInf, False),
                 IntervalPeg(PlusInf, False),
             ),
         )
         self.assertEqual(
-            i_int,
+            self.i_int,
             Interval(
                 IntervalPeg(0.0, True),
                 IntervalPeg(1.0, False),
@@ -128,6 +131,33 @@ class TestInterval(unittest.TestCase):
         with self.assertRaises(StopIteration):
             pegsGen.__next__()
 
+    def test_builder(self):
+        """Builder notation must give the same result as explicit creation."""
+        b = Interval.builder()
+        self.assertEqual(
+            self.i_open,
+            b(0)(1),
+        )
+        self.assertEqual(
+            self.i_closed,
+            b[0][1],
+        )
+        self.assertEqual(
+            self.i_low_slice,
+            b(...)(0),
+        )
+        self.assertEqual(
+            self.i_high_slice_c,
+            b[0][...],
+        )
+        self.assertEqual(
+            self.i_all,
+            b[...](...),
+        )
+        self.assertEqual(
+            self.i_int,
+            b[0](1),
+        )
 
 if __name__ == "__main__":
     unittest.main()

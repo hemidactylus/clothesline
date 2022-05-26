@@ -17,9 +17,6 @@ class Interval:
     defined by two IntervalPeg objects. It can span to infinities.
     """
 
-    begin = None
-    end = None
-
     def __init__(self, begin, end):
         """
         begin and end are PegInterval instances
@@ -43,7 +40,7 @@ class Interval:
             return False
 
     def __hash__(self):
-        return hash((self.begin, self.end))
+        return hash((self.__class__, self.begin, self.end))
 
     def __repr__(self):
         beginName = x_repr(self.begin.value)

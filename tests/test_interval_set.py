@@ -58,6 +58,7 @@ class TestIntervalSet(unittest.TestCase):
             Interval.interval(-1, False, 2, True),
             Interval.high_slice(3),
         ])
+        cls.is_utils = IntervalSet.utils()
 
     def test_equals(self):
         """Equality between interval sets."""
@@ -114,7 +115,7 @@ class TestIntervalSet(unittest.TestCase):
     def test_difference(self):
         """Difference between IntervalSet instances."""
         self.assertEqual(
-            IntervalSet.open(-2, 2) - IntervalSet.open(-1, 1),
+            self.is_utils.open(-2, 2) - self.is_utils.open(-1, 1),
             IntervalSet(
                 [
                     Interval.interval(-2, False, -1, True),
@@ -123,31 +124,31 @@ class TestIntervalSet(unittest.TestCase):
             ),
         )
         self.assertEqual(
-            IntervalSet.open(5, 7)
+            self.is_utils.open(5, 7)
             - IntervalSet([Interval.open(5, 6), Interval.interval(6, True, 7, False)]),
-            IntervalSet.empty(),
+            self.is_utils.empty(),
         )
         self.assertEqual(
             IntervalSet([Interval.open(5, 7)]) - IntervalSet([Interval.open(4, 8)]),
-            IntervalSet.empty(),
+            self.is_utils.empty(),
         )
 
     def test_intersection(self):
         """Intersection between IntervalSet instances."""
         self.assertEqual(
-            IntervalSet.open(0, 2).intersect(IntervalSet.open(1, 3)),
-            IntervalSet.open(1, 2),
+            self.is_utils.open(0, 2).intersect(self.is_utils.open(1, 3)),
+            self.is_utils.open(1, 2),
         )
         self.assertEqual(
-            IntervalSet.closed(0, 1).intersect(IntervalSet.closed(2, 3)),
-            IntervalSet.empty(),
+            self.is_utils.closed(0, 1).intersect(self.is_utils.closed(2, 3)),
+            self.is_utils.empty(),
         )
         self.assertEqual(
-            IntervalSet.all().intersect(self.is1),
+            self.is_utils.all().intersect(self.is1),
             self.is1,
         )
         self.assertEqual(
-            IntervalSet.all().intersect(self.is2),
+            self.is_utils.all().intersect(self.is2),
             self.is2,
         )
 
@@ -185,7 +186,7 @@ class TestIntervalSet(unittest.TestCase):
         """Interval is never IntervalSet."""
         self.assertNotEqual(
             Interval.open(0, 1),
-            IntervalSet.open(0, 1),
+            self.is_utils.open(0, 1),
         )
 
     def test_hybrid_set_operations(self):
@@ -193,15 +194,15 @@ class TestIntervalSet(unittest.TestCase):
         iset = IntervalSet([Interval.open(-2, -1), Interval.high_slice(1)])
         self.assertEqual(
             iset + Interval.closed(-1, 1),
-            IntervalSet.high_slice(-2),
+            self.is_utils.high_slice(-2),
         )
         self.assertEqual(
             iset - Interval.open(-3, 0),
-            IntervalSet.high_slice(1),
+            self.is_utils.high_slice(1),
         )
         self.assertEqual(
             iset.intersect(Interval.interval(1, True, 3, False)),
-            IntervalSet.open(1, 3),
+            self.is_utils.open(1, 3),
         )
         self.assertEqual(
             iset.xor(Interval.closed(-2, -1)),
@@ -213,7 +214,8 @@ class TestIntervalSet(unittest.TestCase):
         )
 
     def test_superset_of(self):
-        self.assertTrue(self.is1.superset_of(IntervalSet.empty()))
+        """Test of the 'superset_of' boolean test."""
+        self.assertTrue(self.is1.superset_of(self.is_utils.empty()))
         self.assertTrue(self.is1.superset_of(IntervalSet([
             Interval.open(11, 12),
         ])))
@@ -221,12 +223,23 @@ class TestIntervalSet(unittest.TestCase):
             Interval.point(14),
             Interval.closed(17, 19),
         ])))
-        self.assertFalse(self.is1.superset_of(IntervalSet.point(13)))
+        self.assertFalse(self.is1.superset_of(self.is_utils.point(13)))
         self.assertFalse(self.is1.superset_of(IntervalSet([
             Interval.open(11, 13),
             Interval.closed(13, 14),
         ])))
 
+    def test_builder(self):
+        """Builder syntax: must yield the same as explicit creation."""
+        b = IntervalSet.builder()
+        self.assertEqual(
+            b[10](13) + b(13)[14] + b(15)[...],
+            self.is1,
+        )
+        self.assertEqual(
+            b[8][8] + b(10)(11) + b(11)[13],
+            self.is2,
+        )
 
 if __name__ == "__main__":
     unittest.main()

@@ -159,5 +159,19 @@ class TestInterval(unittest.TestCase):
             b[0](1),
         )
 
+    def test_hash(self):
+        """Interval's hash function"""
+        self.assertTrue(
+            len(
+                {
+                    Interval.open(0, 1),
+                    Interval.open(0, 1),
+                    Interval.all(),
+                    Interval.interval(MinusInf, False, PlusInf, False),
+                }
+            )
+            == 2
+        )
+
 if __name__ == "__main__":
     unittest.main()

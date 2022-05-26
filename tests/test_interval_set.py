@@ -241,5 +241,19 @@ class TestIntervalSet(unittest.TestCase):
             self.is2,
         )
 
+    def test_hash(self):
+        """IntervalSet's hash function"""
+        self.assertTrue(
+            len(
+                {
+                    self.is_utils.open(0, 1),
+                    self.is_utils.open(0, 1),
+                    self.is_utils.all(),
+                    self.is_utils.interval(MinusInf, False, PlusInf, False),
+                }
+            )
+            == 2
+        )
+
 if __name__ == "__main__":
     unittest.main()

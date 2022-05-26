@@ -19,7 +19,7 @@ class Interval:
 
     def __init__(self, begin, end):
         """
-        begin and end are PegInterval instances
+        begin and end are IntervalPeg instances
         """
         if x_gt(begin.value, end.value):
             raise InvalidValueError("Interval begin must come before its end")
@@ -40,7 +40,7 @@ class Interval:
             return False
 
     def __hash__(self):
-        return hash((self.__class__, self.begin, self.end))
+        return hash((self.__class__, hash(self.begin), hash(self.end)))
 
     def __repr__(self):
         beginName = x_repr(self.begin.value)
@@ -89,8 +89,8 @@ class Interval:
     def intervals(self):
         """
         Return an 'iterable' over a single element, this interval.
-        This is only to enable quick-syntax for IntervalSet set-wise operations
-        whereby the second operand is a puny Interval.
+        This is only to enable quick-syntax for those IntervalSet
+        set-wise operations whereby the second operand is a puny Interval.
         """
         yield self
 

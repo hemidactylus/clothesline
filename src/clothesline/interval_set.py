@@ -7,8 +7,8 @@ serializability of its values.
 from clothesline.interval import Interval
 from clothesline.algebra import combine_intervals
 #
-from clothesline.interval_generic_builder import IntervalGenericBuilder
-from clothesline.interval_set_generic_utils import IntervalSetGenericUtils
+from clothesline.generic.interval_generic_builder import IntervalGenericBuilder
+from clothesline.generic.interval_set_generic_utils import IntervalSetGenericUtils
 
 class IntervalSet:
     """

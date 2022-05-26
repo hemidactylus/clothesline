@@ -6,7 +6,7 @@ import unittest
 
 from clothesline.interval_peg import IntervalPeg
 from clothesline.interval import Interval
-from clothesline.symbols import PlusInf, MinusInf
+from clothesline.algebra.symbols import PlusInf, MinusInf
 
 from clothesline.exceptions import InvalidValueError
 

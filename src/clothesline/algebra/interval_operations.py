@@ -4,7 +4,7 @@ interval algebra primitives.
 
 from functools import cmp_to_key
 
-from clothesline.symbols import x_cmp
+from clothesline.algebra.symbols import x_cmp
 from clothesline.interval_peg import IntervalPeg
 from clothesline.exceptions import InvalidCombineEndState
 

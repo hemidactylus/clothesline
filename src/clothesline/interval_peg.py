@@ -7,10 +7,10 @@ level that is a single class unambiguously. It will not receive the context
 dependencies that make Interval* and IntervalSet* a "family" of classes.
 """
 
+from clothesline.algebra.symbols import is_symbol
+from clothesline.algebra.symbols import x_equals
+#
 from clothesline.exceptions import InvalidValueError
-
-from clothesline.symbols import is_symbol
-from clothesline.symbols import x_equals
 
 
 class IntervalPeg:

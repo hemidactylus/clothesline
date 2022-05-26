@@ -5,7 +5,7 @@ is set per-instance, so this serves as a generic class template.
 """
 
 from clothesline.interval_peg import IntervalPeg
-from clothesline.symbols import PlusInf, MinusInf
+from clothesline.algebra.symbols import PlusInf, MinusInf
 
 
 class IntervalGenericUtils:

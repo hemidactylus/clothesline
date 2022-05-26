@@ -7,7 +7,7 @@ import unittest
 from clothesline import IntervalSet
 from clothesline.interval_peg import IntervalPeg
 from clothesline.interval import Interval
-from clothesline.symbols import PlusInf, MinusInf
+from clothesline.algebra.symbols import PlusInf, MinusInf
 
 
 class TestIntervalSet(unittest.TestCase):

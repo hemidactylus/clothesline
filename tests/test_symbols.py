@@ -5,9 +5,9 @@ Tests for the symbols module
 from functools import cmp_to_key
 import unittest
 
-from clothesline.symbols import PlusInf, MinusInf
-from clothesline.symbols import is_symbol
-from clothesline.symbols import x_equals, x_gt, x_lt, x_ge, x_le, x_cmp
+from clothesline.algebra.symbols import PlusInf, MinusInf
+from clothesline.algebra.symbols import is_symbol
+from clothesline.algebra.symbols import x_equals, x_gt, x_lt, x_ge, x_le, x_cmp
 
 
 class TestSymbols(unittest.TestCase):

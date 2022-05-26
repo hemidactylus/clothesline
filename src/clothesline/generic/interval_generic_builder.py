@@ -6,7 +6,7 @@ syntax yet result in the creation of intervals, interval sets and also
 other types of intervalsets (e.g. enriched with metrics and so on).
 """
 
-from clothesline.symbols import PlusInf, MinusInf
+from clothesline.algebra.symbols import PlusInf, MinusInf
 from clothesline.interval_peg import IntervalPeg
 
 class IntervalGenericBuilder():

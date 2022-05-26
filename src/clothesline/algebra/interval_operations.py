@@ -1,20 +1,22 @@
 """
-Interval algebra primitives.
+interval algebra primitives.
 """
 
 from functools import cmp_to_key
 
 from clothesline.symbols import x_cmp
 from clothesline.interval_peg import IntervalPeg
-from clothesline.interval import Interval
 from clothesline.exceptions import InvalidCombineEndState
 
 
-def combine_intervals(interval_iterables, combiner_function=lambda q: q[0]):
+def combine_intervals(int_maker, interval_iterables, combiner_function=lambda q: q[0]):
     """
     The main workhorse for interval algebra.
     A list of N iterables over intervals is combined according to some
     prescriptions.
+
+    `int_maker` is a function from (peg1, peg2) to an instance of the desired
+    interval* class (e.g. the constructor "Interval" itself).
 
     `interval_iterables` is a list of iterables, each consisting of several
     intervals. Each of the iterables is an "operand" in some arbitrary
@@ -111,7 +113,7 @@ def combine_intervals(interval_iterables, combiner_function=lambda q: q[0]):
                 if point_included:
                     # this point, isolated, is a zero-length interval:
                     final_intervals.append(
-                        Interval(
+                        int_maker(
                             IntervalPeg(marker, True),
                             IntervalPeg(marker, True),
                         )
@@ -129,7 +131,7 @@ def combine_intervals(interval_iterables, combiner_function=lambda q: q[0]):
                     # a hole: finalize/flush buffer and re-init it at once
                     i_buffer[1] = (marker, point_included)
                     final_intervals.append(
-                        Interval(
+                        int_maker(
                             IntervalPeg(i_buffer[0][0], i_buffer[0][1]),
                             IntervalPeg(i_buffer[1][0], i_buffer[1][1]),
                         )
@@ -139,7 +141,7 @@ def combine_intervals(interval_iterables, combiner_function=lambda q: q[0]):
                 # end of the interval being built: flush and reset buffer
                 i_buffer[1] = (marker, point_included)
                 final_intervals.append(
-                    Interval(
+                    int_maker(
                         IntervalPeg(i_buffer[0][0], i_buffer[0][1]),
                         IntervalPeg(i_buffer[1][0], i_buffer[1][1]),
                     )

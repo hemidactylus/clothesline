@@ -48,20 +48,23 @@ class IntervalSet:
             int_utils=Interval.utils(),
         )
 
+    @staticmethod
+    def make_interval(*pegs):
+        return Interval(*pegs)
+
     ## "Regular methods" follow (which use instantiations from the meta part).
 
     def __init__(self, intervals):
         """`intervals` is a list of Interval instances."""
         self._intervals = self._normalize(intervals)
 
-    @staticmethod
-    def _normalize(intervals):
+    def _normalize(self, intervals):
         """
         An arbitrary input of intervals (overlapping, unsorted)
         is reduced to 'normal form' using the one-single-list
         form of the generic combiner.
         """
-        return combine_intervals([intervals])
+        return combine_intervals(self.make_interval, [intervals])
 
     def contains(self, value):
         """
@@ -112,6 +115,7 @@ class IntervalSet:
         """
         return self.__class__(
             combine_intervals(
+                self.make_interval,
                 [self._intervals, other.intervals()],
                 combiner_function=lambda q: q[0] or q[1],
             )
@@ -123,6 +127,7 @@ class IntervalSet:
         """
         return self.__class__(
             combine_intervals(
+                self.make_interval,
                 [self._intervals, other.intervals()],
                 combiner_function=lambda q: q[0] and not q[1],
             )
@@ -134,6 +139,7 @@ class IntervalSet:
         """
         return self.__class__(
             combine_intervals(
+                self.make_interval,
                 [self._intervals, other.intervals()],
                 combiner_function=lambda q: q[0] and q[1],
             )
@@ -145,6 +151,7 @@ class IntervalSet:
         """
         return self.__class__(
             combine_intervals(
+                self.make_interval,
                 [self._intervals, other.intervals()],
                 combiner_function=lambda q: q[0] ^ q[1],
             )

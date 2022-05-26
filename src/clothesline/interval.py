@@ -3,8 +3,8 @@ A single interval with a begin and and end, either open or closed at its ends.
 """
 
 from clothesline.interval_generic_utils import IntervalGenericUtils
-from clothesline.symbols import is_symbol, x_equals, x_lt, x_gt, x_repr
 from clothesline.interval_generic_builder import IntervalGenericBuilder
+from clothesline.symbols import is_symbol, x_equals, x_lt, x_gt, x_repr
 #
 from clothesline.exceptions import InvalidValueError
 

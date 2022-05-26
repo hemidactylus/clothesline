@@ -1,6 +1,10 @@
 """
 A single value + indication of whether included or not in the interval it
 contributes to defining.
+
+In the chain IntervalPeg -> Interval -> IntervalSet, the peg is the only
+level that is a single class unambiguously. It will not receive the context
+dependencies that make Interval* and IntervalSet* a "family" of classes.
 """
 
 from clothesline.exceptions import InvalidValueError

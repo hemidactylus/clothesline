@@ -2,8 +2,7 @@
 A single interval with a begin and and end, either open or closed at its ends.
 """
 
-from clothesline.interval_peg import IntervalPeg
-from clothesline.symbols import PlusInf, MinusInf
+from clothesline.interval_generic_utils import IntervalGenericUtils
 from clothesline.symbols import is_symbol, x_equals, x_lt, x_gt, x_repr
 from clothesline.interval_generic_builder import IntervalGenericBuilder
 #
@@ -15,7 +14,22 @@ class Interval:
     A single uninterrupted interval over the universe field:
         [a,b] or (a,b) or (a,b] or [a,b)
     defined by two IntervalPeg objects. It can span to infinities.
+
+    To allow for proper subclassing, do not mention Interval class
+    explicitly except in the first two 'meta part' methods.
     """
+
+    ## "Meta part", i.e. method to override when subclassing.
+
+    @staticmethod
+    def builder():
+        return IntervalGenericBuilder(finalizer=lambda pegs: Interval(*pegs))
+
+    @staticmethod
+    def utils():
+        return IntervalGenericUtils(int_instantiator=Interval)
+
+    ## "Regular methods" follow (which use instantiations from the meta part).
 
     def __init__(self, begin, end):
         """
@@ -93,84 +107,3 @@ class Interval:
         set-wise operations whereby the second operand is a puny Interval.
         """
         yield self
-
-    @staticmethod
-    def open(value_begin, value_end):
-        """
-        Create an open interval with finite boundaries.
-        """
-        return Interval.interval(
-            value_begin,
-            False,
-            value_end,
-            False,
-        )
-
-    @staticmethod
-    def closed(value_begin, value_end):
-        """
-        Create a closed interval with finite boundaries.
-        """
-        return Interval.interval(
-            value_begin,
-            True,
-            value_end,
-            True,
-        )
-
-    @staticmethod
-    def point(value):
-        """
-        Create a zero-length degenerate [x, x] point-line 'interval'.
-        """
-        return Interval.closed(value, value)
-
-    @staticmethod
-    def low_slice(value_end, included=False):
-        """
-        Create an interval from -inf to a certain value.
-        """
-        return Interval.interval(
-            MinusInf,
-            False,
-            value_end,
-            included,
-        )
-
-    @staticmethod
-    def high_slice(value_begin, included=False):
-        """
-        Create an interval from a value up to +inf.
-        """
-        return Interval.interval(
-            value_begin,
-            included,
-            PlusInf,
-            False,
-        )
-
-    @staticmethod
-    def all():
-        """
-        Return the "whole of it" interval.
-        """
-        return Interval.interval(
-            MinusInf,
-            False,
-            PlusInf,
-            False,
-        )
-
-    @staticmethod
-    def interval(value_begin, begin_included, value_end, end_included):
-        """
-        Directly create an interval from the values and the open/closed specs.
-        """
-        return Interval(
-            IntervalPeg(value_begin, begin_included),
-            IntervalPeg(value_end, end_included),
-        )
-
-    @staticmethod
-    def builder():
-        return IntervalGenericBuilder(finalizer=lambda pegs: Interval(*pegs))

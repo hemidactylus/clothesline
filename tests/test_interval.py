@@ -18,12 +18,13 @@ class TestInterval(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.i_open = Interval.open(0.0, 1.0)
-        cls.i_closed = Interval.closed(0.0, 1.0)
-        cls.i_low_slice = Interval.low_slice(0.0)
-        cls.i_high_slice_c = Interval.high_slice(0.0, included=True)
-        cls.i_all = Interval.all()
-        cls.i_int = Interval.interval(0.0, True, 1.0, False)
+        cls.int_utils = Interval.utils()
+        cls.i_open = cls.int_utils.open(0.0, 1.0)
+        cls.i_closed = cls.int_utils.closed(0.0, 1.0)
+        cls.i_low_slice = cls.int_utils.low_slice(0.0)
+        cls.i_high_slice_c = cls.int_utils.high_slice(0.0, included=True)
+        cls.i_all = cls.int_utils.all()
+        cls.i_int = cls.int_utils.interval(0.0, True, 1.0, False)
 
     def test_invalids(self):
         """ways to generate invalid intervals"""
@@ -90,10 +91,10 @@ class TestInterval(unittest.TestCase):
 
     def test_contains(self):
         """contains method"""
-        i_ls_c = Interval.low_slice(0.0, True)
-        i_all = Interval.all()
-        i_int = Interval.interval(0.0, False, 1.0, False)
-        i_int_c = Interval.interval(0.0, True, 1.0, True)
+        i_ls_c = self.int_utils.low_slice(0.0, True)
+        i_all = self.int_utils.all()
+        i_int = self.int_utils.interval(0.0, False, 1.0, False)
+        i_int_c = self.int_utils.interval(0.0, True, 1.0, True)
         #
         self.assertTrue(i_ls_c.contains(-1.0))
         self.assertFalse(i_ls_c.contains(1.0))
@@ -124,7 +125,7 @@ class TestInterval(unittest.TestCase):
         """Test the `pegs()` method"""
         peg1 = IntervalPeg(0.0, True)
         peg2 = IntervalPeg(PlusInf, False)
-        itv = Interval.interval(0.0, True, PlusInf, False)
+        itv = self.int_utils.interval(0.0, True, PlusInf, False)
         pegsGen = itv.pegs()
         self.assertEqual(pegsGen.__next__(), peg1)
         self.assertEqual(pegsGen.__next__(), peg2)
@@ -164,10 +165,10 @@ class TestInterval(unittest.TestCase):
         self.assertTrue(
             len(
                 {
-                    Interval.open(0, 1),
-                    Interval.open(0, 1),
-                    Interval.all(),
-                    Interval.interval(MinusInf, False, PlusInf, False),
+                    self.int_utils.open(0, 1),
+                    self.int_utils.open(0, 1),
+                    self.int_utils.all(),
+                    self.int_utils.interval(MinusInf, False, PlusInf, False),
                 }
             )
             == 2

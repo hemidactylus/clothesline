@@ -43,7 +43,10 @@ class IntervalSet:
         """
         Create an "utils" object, offering standard intervalset* creation.
         """
-        return IntervalSetGenericUtils(IntervalSet)
+        return IntervalSetGenericUtils(
+            set_instantiator=lambda ints: IntervalSet(ints),
+            int_utils=Interval.utils(),
+        )
 
     ## "Regular methods" follow (which use instantiations from the meta part).
 

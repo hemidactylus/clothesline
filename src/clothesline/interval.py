@@ -24,10 +24,12 @@ class Interval:
 
     @staticmethod
     def builder():
+        """Create and return a "builder" for these intervals."""
         return IntervalGenericBuilder(finalizer=lambda pegs: Interval(*pegs))
 
     @staticmethod
     def utils():
+        """Create an "interval utils" object for these intervals."""
         return IntervalGenericUtils(int_instantiator=Interval)
 
     ## "Regular methods" follow (which use instantiations from the meta part).

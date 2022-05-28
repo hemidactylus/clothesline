@@ -13,7 +13,12 @@ class IntervalSetGenericUtils:
     def __init__(self, set_instantiator, int_utils):
         """
         An instance of IntervalSetGenericUtils needs to know what class
-        to use to create intervalsets*.
+        to use to create intervalsets*. Generally, set_instantiator
+        is a function from an iterable of intervals* to the desired
+        specific type among the interval-sets*.
+        The int_utils parameter, in turn, must be an instance of
+        IntervalGenericUtils configured to yield the correct types of
+        intervals* to be plugged in the above instantiator.
         """
         self.set_instantiator = set_instantiator
         self.int_utils = int_utils

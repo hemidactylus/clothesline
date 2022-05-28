@@ -11,6 +11,11 @@ from clothesline.algebra.symbols import PlusInf, MinusInf
 class IntervalGenericUtils:
 
     def __init__(self, int_instantiator):
+        """
+        When creating an utils instance, which can create intervals*,
+        the instantiator that must be passed is a function that makes
+        its two arguments (peg0, peg1) into an interval of the desired type.
+        """
         self.int_instantiator = int_instantiator
 
     def open(self, value_begin, value_end):

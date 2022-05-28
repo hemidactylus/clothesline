@@ -2,7 +2,7 @@
 Entry point for easily exposing the useful imports
 """
 
-from clothesline.interval_set import IntervalSet
+from clothesline.interval_set import IntervalSet  # noqa: F401
 
 def main():
     """Entry point for an application script"""

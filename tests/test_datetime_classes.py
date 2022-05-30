@@ -5,7 +5,8 @@ Tests for the datetime-enriched classes
 import unittest
 from datetime import datetime
 
-from clothesline.enriched.datetime_interval_set import DatetimeInterval, DatetimeIntervalSet
+from clothesline import DatetimeIntervalSet
+from clothesline.enriched.datetime_interval_set import DatetimeInterval
 
 
 class TestDatetimeClasses(unittest.TestCase):
@@ -24,15 +25,15 @@ class TestDatetimeClasses(unittest.TestCase):
         """DatetimeInterval builders and utils"""
         date1 = datetime(2010, 1, 1)
         self.assertEqual(
-            self.iu.high_slice(datetime(2010, 1, 1)),
-            self.ib(datetime(2010, 1, 1))(...),
+            self.iu.high_slice(date1),
+            self.ib(date1)(...),
         )
         self.assertIs(
-            type(self.iu.high_slice(datetime(2010, 1, 1))),
+            type(self.iu.high_slice(date1)),
             DatetimeInterval,
         )
         self.assertIs(
-            type(self.ib(datetime(2010, 1, 1))(...)),
+            type(self.ib(date1)(...)),
             DatetimeInterval,
         )
 
@@ -40,15 +41,15 @@ class TestDatetimeClasses(unittest.TestCase):
         """DatetimeIntervalSet builders and utils"""
         date1 = datetime(2010, 1, 1)
         self.assertEqual(
-            self.isu.high_slice(datetime(2010, 1, 1)),
-            self.isb(datetime(2010, 1, 1))(...),
+            self.isu.high_slice(date1),
+            self.isb(date1)(...),
         )
         self.assertIs(
-            type(self.isu.high_slice(datetime(2010, 1, 1))),
+            type(self.isu.high_slice(date1)),
             DatetimeIntervalSet,
         )
         self.assertIs(
-            type(self.isb(datetime(2010, 1, 1))(...)),
+            type(self.isb(date1)(...)),
             DatetimeIntervalSet,
         )
 

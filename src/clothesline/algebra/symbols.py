@@ -2,6 +2,7 @@
 Defines symbols for extension to +/- infinity and related methods.
 """
 
+from clothesline.exceptions import IndeterminateFormError
 
 class PlusInf:  # noqa: PLR0903
     """
@@ -94,6 +95,78 @@ def x_le(val1, val2):
     """
     return x_equals(val1, val2) or x_lt(val1, val2)
 
+
+def x_sum(val1, val2, adder):
+    """
+    Sum of two values.
+    Will raise an error if the two values are the two (opposite) infinities
+    """
+    if val1 is PlusInf:
+        if val2 is PlusInf:
+            # +inf + +inf
+            return PlusInf
+        elif val2 is MinusInf:
+            # +inf + -inf
+            raise IndeterminateFormError
+        else:
+            # +inf + num
+            return PlusInf
+    elif val1 is MinusInf:
+        if val2 is PlusInf:
+            # -inf + +inf
+            raise IndeterminateFormError
+        elif val2 is MinusInf:
+            # -inf + -inf
+            return MinusInf
+        else:
+            # -inf + num
+            return MinusInf
+    else:
+        if val2 is PlusInf:
+            # num + +inf
+            return PlusInf
+        elif val2 is MinusInf:
+            # num + -inf
+            return MinusInf
+        else:
+            # num + num
+            return adder(val1, val2)
+
+def x_subtract(val1, val2, subtracter):
+    """
+    Evaluate the difference val1 - val2.
+    Will raise an error if indeterminate forms arise.
+    """
+    if val1 is PlusInf:
+        if val2 is PlusInf:
+            # +inf - +inf
+            raise IndeterminateFormError
+        elif val2 is MinusInf:
+            # +inf - -inf
+            return PlusInf
+        else:
+            # +inf - num
+            return PlusInf
+    elif val1 is MinusInf:
+        if val2 is PlusInf:
+            # -inf - +inf
+            return MinusInf
+        elif val2 is MinusInf:
+            # -inf - -inf
+            raise IndeterminateFormError
+        else:
+            # -inf - num
+            return MinusInf
+    else:
+        if val2 is PlusInf:
+            # num - +inf
+            return MinusInf
+        elif val2 is MinusInf:
+            # num - -inf
+            return PlusInf
+        else:
+            # num - num
+            return subtracter(val1, val2)
 
 def x_repr(val):
     """

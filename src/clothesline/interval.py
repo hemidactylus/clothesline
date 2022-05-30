@@ -2,12 +2,13 @@
 A single interval with a begin and and end, either open or closed at its ends.
 """
 
-from clothesline.algebra.symbols import is_symbol, x_equals, x_lt, x_gt, x_repr
+from clothesline.algebra.symbols import is_symbol, x_equals, x_lt, x_gt, x_repr, x_subtract
 #
 from clothesline.generic.interval_generic_builder import IntervalGenericBuilder
 from clothesline.generic.interval_generic_utils import IntervalGenericUtils
+from clothesline.domain_metric import DomainMetric
 #
-from clothesline.exceptions import InvalidValueError
+from clothesline.exceptions import InvalidValueError, MetricNotImplementedError
 
 
 class Interval:
@@ -20,7 +21,9 @@ class Interval:
     explicitly except in the first two 'meta part' methods.
     """
 
-    ## "Meta part", i.e. method to override when subclassing.
+    ## "Meta part", i.e. elements to override when subclassing.
+
+    metric = DomainMetric
 
     @staticmethod
     def builder():
@@ -97,6 +100,12 @@ class Interval:
                 else:
                     # value to the left of begin
                     return False
+
+    def extension(self):
+        if self.metric:
+            return x_subtract(self.end.value, self.begin.value, subtracter=self.metric.subtracter)
+        else:
+            raise MetricNotImplementedError
 
     def pegs(self):
         """Return the two ends, iterably."""

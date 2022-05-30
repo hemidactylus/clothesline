@@ -7,7 +7,10 @@ import unittest
 
 from clothesline.algebra.symbols import PlusInf, MinusInf
 from clothesline.algebra.symbols import is_symbol
-from clothesline.algebra.symbols import x_equals, x_gt, x_lt, x_ge, x_le, x_cmp
+from clothesline.algebra.symbols import x_equals, x_gt, x_lt, x_ge, x_le, x_cmp, x_sum, x_subtract
+
+#
+from clothesline.exceptions import IndeterminateFormError
 
 
 class TestSymbols(unittest.TestCase):
@@ -111,6 +114,36 @@ class TestSymbols(unittest.TestCase):
             == 3
         )
 
+    def test_arithmetic(self):
+        """Arithmetic operations with symbols."""
+        def _adder(v1, v2): return v1 + v2
+        def xx_sum(v1, v2): return x_sum(v1, v2, _adder)
+        def _subtracter(v1, v2): return v1 - v2
+        def xx_subtract(v1, v2): return x_subtract(v1, v2, _subtracter)
+        # sums
+        self.assertEqual(xx_sum( PlusInf,  PlusInf),  PlusInf)
+        with self.assertRaises(IndeterminateFormError):
+            xx_sum( PlusInf, MinusInf)
+        self.assertEqual(xx_sum( PlusInf,        1),  PlusInf)
+        with self.assertRaises(IndeterminateFormError):
+            xx_sum(MinusInf,  PlusInf)
+        self.assertEqual(xx_sum(MinusInf, MinusInf), MinusInf)
+        self.assertEqual(xx_sum(MinusInf,        1), MinusInf)
+        self.assertEqual(xx_sum(       1,  PlusInf),  PlusInf)
+        self.assertEqual(xx_sum(       1, MinusInf), MinusInf)
+        self.assertEqual(xx_sum(       1,        1),        2)
+        # differences
+        self.assertEqual(xx_subtract( PlusInf, MinusInf),  PlusInf)
+        with self.assertRaises(IndeterminateFormError):
+            xx_subtract( PlusInf, PlusInf)
+        self.assertEqual(xx_subtract( PlusInf,        1),  PlusInf)
+        with self.assertRaises(IndeterminateFormError):
+            xx_subtract(MinusInf,  MinusInf)
+        self.assertEqual(xx_subtract(MinusInf,  PlusInf), MinusInf)
+        self.assertEqual(xx_subtract(MinusInf,        1), MinusInf)
+        self.assertEqual(xx_subtract(       1, MinusInf),  PlusInf)
+        self.assertEqual(xx_subtract(       1,  PlusInf), MinusInf)
+        self.assertEqual(xx_subtract(       1,        1),        0)
 
 if __name__ == "__main__":
     unittest.main()

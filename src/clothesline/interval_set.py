@@ -4,11 +4,18 @@ This is the base form, which has no metric imposed and assumes trivial
 serializability of its values.
 """
 
+from functools import reduce
+
 from clothesline.interval import Interval
 from clothesline.algebra import combine_intervals
+from clothesline.algebra.symbols import x_sum
 #
 from clothesline.generic.interval_generic_builder import IntervalGenericBuilder
 from clothesline.generic.interval_set_generic_utils import IntervalSetGenericUtils
+from clothesline.domain_metric import DomainMetric
+#
+from clothesline.exceptions import MetricNotImplementedError
+
 
 class IntervalSet:
     """
@@ -29,7 +36,9 @@ class IntervalSet:
     (for instantiation) can be used.
     """
 
-    ## "Meta part", i.e. method to override when subclassing.
+    ## "Meta part", i.e. items to override when subclassing.
+
+    metric = DomainMetric
 
     @staticmethod
     def builder():
@@ -74,6 +83,17 @@ class IntervalSet:
         """
         return any(interval.contains(value) for interval in self._intervals)
 
+    def extension(self):
+        if self.metric:
+            def c_sum(v1, v2): return x_sum(v1, v2, self.metric.adder)
+            return reduce(
+                c_sum,
+                (interval.extension() for interval in self._intervals),
+                self.metric.zero,
+            )
+        else:
+            raise MetricNotImplementedError
+ 
     def __eq__(self, other):
         return (
             isinstance(other, self.__class__)

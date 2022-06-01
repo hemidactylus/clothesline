@@ -39,6 +39,10 @@ class DatetimeInterval(Interval):
     metric = DatetimeMetric
 
     @staticmethod
+    def value_encoder(v):
+        return v.timestamp()
+
+    @staticmethod
     def builder():
         """
         Return a builder configured to make peg pairs into

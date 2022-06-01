@@ -27,3 +27,9 @@ class MetricNotImplementedError(ValueError):
     An interval*/intervalset* class is asked to do
     metric computations, but no metric is defined.
     """
+
+class UnserializableItemError(ValueError):
+    """
+    An attempt to convert an interval*/set* to json is made
+    for an object whose domain data type admits no serializable form.
+    """

@@ -75,6 +75,18 @@ class IntervalSet:
         """
         return combine_intervals(self.make_interval, [intervals])
 
+    def to_dict(self):
+        """
+        Return a json-encodable representation of this interval set.
+        """
+        return {
+            # other properties here [...]
+            'intervals': [
+                interval.to_dict()
+                for interval in self._intervals
+            ]
+        }
+
     def contains(self, value):
         """
         Test whether a value belongs to the set.

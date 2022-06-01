@@ -7,6 +7,9 @@ and infinite new strings insertable inbetween, with no well-defined 'distance',
 
 Useful mostly as a sanity check that a metric is not assumed anywhere.
 
+Also, rather arbitrarily (for testing purposes), string-intervals are set
+to non-serializable.
+
 Please refer to the Datetime case for relevant comments on the structure.
 """
 
@@ -24,6 +27,8 @@ class StringInterval(Interval):
     """
 
     metric = None
+
+    value_encoder = None
 
     @staticmethod
     def builder():

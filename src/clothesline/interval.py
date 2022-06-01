@@ -8,7 +8,7 @@ from clothesline.generic.interval_generic_builder import IntervalGenericBuilder
 from clothesline.generic.interval_generic_utils import IntervalGenericUtils
 from clothesline.domain_metric import DomainMetric
 #
-from clothesline.exceptions import InvalidValueError, MetricNotImplementedError
+from clothesline.exceptions import InvalidValueError, MetricNotImplementedError, UnserializableItemError
 
 
 class Interval:
@@ -24,6 +24,9 @@ class Interval:
     ## "Meta part", i.e. elements to override when subclassing.
 
     metric = DomainMetric
+
+    @staticmethod
+    def value_encoder(v): return v
 
     @staticmethod
     def builder():
@@ -68,6 +71,21 @@ class Interval:
         endName = x_repr(self.end.value)
         endParen = "]" if self.end.included else ")"
         return f"{beginParen}{beginName}, {endName}{endParen}"
+
+    def to_dict(self):
+        """
+        Return a json-encodable representation of this interval.
+        """
+        if self.value_encoder:
+            return {
+                # other properties here [...]
+                'pegs': [
+                    self.begin.to_dict(v_encoder=self.value_encoder),
+                    self.end.to_dict(v_encoder=self.value_encoder),
+                ]
+            }
+        else:
+            raise UnserializableItemError
 
     def contains(self, value):  # noqa: PLR0911
         """

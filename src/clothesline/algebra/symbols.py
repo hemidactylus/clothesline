@@ -31,8 +31,28 @@ def is_symbol(value):
     return value is PlusInf or value is MinusInf
 
 
-# extensions of in/equality comparisons to R+infinities:
+def x_repr(val):
+    """
+    String representation
+    """
+    if is_symbol(val):
+        return val.__repr__()
+    else:
+        return val.__repr__()
 
+
+def x_to_dict(value, v_encoder):
+    """
+    Return a json-encodable representation of this extended 'value'.
+    """
+    if is_symbol(value):
+        return {'symbol': value.__repr__()}
+    else:
+        # "ordinary value"
+        return {'o_value': v_encoder(value)}
+
+
+# Extensions of arithmetic to "domain + infinities"
 
 def x_equals(val1, val2):
     """
@@ -167,12 +187,3 @@ def x_subtract(val1, val2, subtracter):
         else:
             # num - num
             return subtracter(val1, val2)
-
-def x_repr(val):
-    """
-    String representation
-    """
-    if is_symbol(val):
-        return val.__repr__()
-    else:
-        return val.__repr__()

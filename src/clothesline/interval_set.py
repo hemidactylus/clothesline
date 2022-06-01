@@ -58,13 +58,18 @@ class IntervalSet:
         )
 
     @staticmethod
-    def make_interval(*pegs):
-        return Interval(*pegs)
+    def interval_class():
+        """
+        Return the class object of the interval* related to this set.
+        """
+        return Interval
 
     ## "Regular methods" follow (which use instantiations from the meta part).
 
     def __init__(self, intervals):
         """`intervals` is a list of Interval instances."""
+        self._interval_class = self.interval_class()
+        # _normalize expects _interval_class to be set:
         self._intervals = self._normalize(intervals)
 
     def _normalize(self, intervals):
@@ -73,7 +78,7 @@ class IntervalSet:
         is reduced to 'normal form' using the one-single-list
         form of the generic combiner.
         """
-        return combine_intervals(self.make_interval, [intervals])
+        return combine_intervals(self._interval_class, [intervals])
 
     def to_dict(self):
         """
@@ -147,7 +152,7 @@ class IntervalSet:
         """
         return self.__class__(
             combine_intervals(
-                self.make_interval,
+                self._interval_class,
                 [self._intervals, other.intervals()],
                 combiner_function=lambda q: q[0] or q[1],
             )
@@ -159,7 +164,7 @@ class IntervalSet:
         """
         return self.__class__(
             combine_intervals(
-                self.make_interval,
+                self._interval_class,
                 [self._intervals, other.intervals()],
                 combiner_function=lambda q: q[0] and not q[1],
             )
@@ -171,7 +176,7 @@ class IntervalSet:
         """
         return self.__class__(
             combine_intervals(
-                self.make_interval,
+                self._interval_class,
                 [self._intervals, other.intervals()],
                 combiner_function=lambda q: q[0] and q[1],
             )
@@ -183,7 +188,7 @@ class IntervalSet:
         """
         return self.__class__(
             combine_intervals(
-                self.make_interval,
+                self._interval_class,
                 [self._intervals, other.intervals()],
                 combiner_function=lambda q: q[0] ^ q[1],
             )

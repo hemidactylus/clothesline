@@ -69,9 +69,8 @@ class StringIntervalSet(IntervalSet):
         )
 
     @staticmethod
-    def make_interval(*pegs):
+    def interval_class():
         """
-        Convert a list of (two) pegs into an interval (note: not a set!)
-        as an instance of the correct class.
+        Return the interval class this set is made of.
         """
-        return StringInterval(*pegs)
+        return StringInterval

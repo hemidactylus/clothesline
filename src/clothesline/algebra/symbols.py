@@ -2,7 +2,7 @@
 Defines symbols for extension to +/- infinity and related methods.
 """
 
-from clothesline.exceptions import IndeterminateFormError
+from clothesline.exceptions import IndeterminateFormError, UnparseableDictError
 
 class PlusInf:  # noqa: PLR0903
     """
@@ -50,6 +50,18 @@ def x_to_dict(value, v_encoder):
     else:
         # "ordinary value"
         return {'o_value': v_encoder(value)}
+
+
+def x_from_dict(input_dict, v_decoder):
+    if 'symbol' in input_dict:
+        if input_dict['symbol'] == PlusInf.__repr__():
+            return PlusInf
+        elif input_dict['symbol'] == MinusInf.__repr__():
+            return MinusInf
+        else:
+            raise UnparseableDictError
+    else:
+        return v_decoder(input_dict['o_value'])
 
 
 # Extensions of arithmetic to "domain + infinities"

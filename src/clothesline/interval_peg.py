@@ -7,7 +7,7 @@ level that is a single class unambiguously. It will not receive the context
 dependencies that make Interval* and IntervalSet* a "family" of classes.
 """
 
-from clothesline.algebra.symbols import is_symbol, x_to_dict
+from clothesline.algebra.symbols import is_symbol, x_to_dict, x_from_dict
 from clothesline.algebra.symbols import x_equals
 #
 from clothesline.exceptions import InvalidValueError
@@ -48,3 +48,10 @@ class IntervalPeg:
             'value': x_to_dict(self.value, v_encoder=v_encoder),
             'included': self.included,
         }
+
+    @staticmethod
+    def from_dict(input_dict, v_decoder):
+        return IntervalPeg(
+            x_from_dict(input_dict['value'], v_decoder=v_decoder),
+            input_dict['included'],
+        )

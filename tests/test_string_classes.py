@@ -74,3 +74,6 @@ class TestStringClasses(unittest.TestCase):
             sseti,
             self.isu.point(string0) + self.isu.point(string1) + self.isb[string2][string2]
         )
+
+if __name__ == "__main__":
+    unittest.main()

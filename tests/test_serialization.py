@@ -6,6 +6,7 @@ import json
 import unittest
 
 from clothesline import IntervalSet
+from clothesline.interval import Interval
 from clothesline.enriched.datetime_interval_set import DatetimeIntervalSet
 from clothesline.enriched.string_interval_set import StringIntervalSet
 
@@ -20,7 +21,9 @@ class TestIntervalSetSerialization(unittest.TestCase):
     def test_serializability(self):
         builder = IntervalSet.builder()
         is1 = builder[10](11) + builder[12](...)
-        json.dumps((is1).to_dict(),indent=4)
+        is_dict = is1.to_dict()
+        restored_is1 = IntervalSet.utils().from_dict(is_dict)
+        self.assertEqual(is1, restored_is1)
 
 
 class TestDatetimeIntervalSetSerialization(unittest.TestCase):
@@ -36,7 +39,9 @@ class TestDatetimeIntervalSetSerialization(unittest.TestCase):
         #
         builder = DatetimeIntervalSet.builder()
         is1 = builder[d0](d1) + builder[d2](...)
-        json.dumps((is1).to_dict(),indent=4)
+        is_dict = is1.to_dict()
+        restored_is1 = DatetimeIntervalSet.utils().from_dict(is_dict)
+        self.assertEqual(is1, restored_is1)
 
 
 class TestStringIntervalSetSerialization(unittest.TestCase):
@@ -49,4 +54,9 @@ class TestStringIntervalSetSerialization(unittest.TestCase):
         builder = StringIntervalSet.builder()
         is1 = builder["a"]("bm") + builder["m"](...)
         with self.assertRaises(UnserializableItemError):
-            json.dumps((is1).to_dict(),indent=4)
+            is1.to_dict()
+        with self.assertRaises(UnserializableItemError):
+            StringIntervalSet.utils().from_dict({})
+
+if __name__ == "__main__":
+    unittest.main()

@@ -40,12 +40,15 @@ class IntervalSet:
 
     metric = DomainMetric
 
+    serializing_class = 'IntervalSet'
+    serializing_version = 1
+
     @staticmethod
     def builder():
         """
         Create an interval set builder.
         """
-        return IntervalGenericBuilder(finalizer = lambda pegs: IntervalSet([Interval(*pegs)]))
+        return IntervalGenericBuilder(finalizer=lambda pegs: IntervalSet([Interval(*pegs)]))
 
     @staticmethod
     def utils():
@@ -55,6 +58,8 @@ class IntervalSet:
         return IntervalSetGenericUtils(
             set_instantiator=lambda ints: IntervalSet(ints),
             int_utils=Interval.utils(),
+            serializing_class='IntervalSet',
+            serializing_version=1,
         )
 
     @staticmethod
@@ -85,7 +90,8 @@ class IntervalSet:
         Return a json-encodable representation of this interval set.
         """
         return {
-            # other properties here [...]
+            'class': self.serializing_class,
+            'version': self.serializing_version,
             'intervals': [
                 interval.to_dict()
                 for interval in self._intervals

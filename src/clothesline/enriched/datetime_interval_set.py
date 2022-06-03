@@ -38,6 +38,9 @@ class DatetimeInterval(Interval):
 
     metric = DatetimeMetric
 
+    serializing_class = 'DatetimeInterval'
+    serializing_version = 1
+
     @staticmethod
     def value_encoder(v):
         return v.timestamp()
@@ -56,7 +59,12 @@ class DatetimeInterval(Interval):
         Return an "utils" object configured to create special cases of
         intervals as instance of this subclass.
         """
-        return IntervalGenericUtils(int_instantiator=DatetimeInterval)
+        return IntervalGenericUtils(
+            int_instantiator=DatetimeInterval,
+            value_decoder=lambda v: datetime.datetime.fromtimestamp(v),
+            serializing_class='DatetimeInterval',
+            serializing_version=1,
+        )
 
 
 class DatetimeIntervalSet(IntervalSet):
@@ -68,6 +76,9 @@ class DatetimeIntervalSet(IntervalSet):
     """
 
     metric = DatetimeMetric
+
+    serializing_class = 'DatetimeIntervalSet'
+    serializing_version = 1
 
     @staticmethod
     def builder():
@@ -86,6 +97,8 @@ class DatetimeIntervalSet(IntervalSet):
         return IntervalSetGenericUtils(
             set_instantiator=lambda ints: DatetimeIntervalSet(ints),
             int_utils=DatetimeInterval.utils(),
+            serializing_class='DatetimeIntervalSet',
+            serializing_version=1,
         )
 
     @staticmethod

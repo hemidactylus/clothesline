@@ -7,10 +7,12 @@ classes and with a common set of methods an "utils" creates intervalsets
 of the appropriate type.
 """
 
+from clothesline.exceptions import UnparseableDictError, UnserializableItemError, UnsupportedVersionDictError
+
 
 class IntervalSetGenericUtils:
 
-    def __init__(self, set_instantiator, int_utils):
+    def __init__(self, set_instantiator, int_utils, serializing_class=None, serializing_version=None):
         """
         An instance of IntervalSetGenericUtils needs to know what class
         to use to create intervalsets*. Generally, set_instantiator
@@ -22,6 +24,25 @@ class IntervalSetGenericUtils:
         """
         self.set_instantiator = set_instantiator
         self.int_utils = int_utils
+        self.serializing_class = serializing_class
+        self.serializing_version = serializing_version
+
+    def from_dict(self, input_dict):
+        if self.serializing_class is None or self.serializing_version is None:
+            raise UnserializableItemError
+        #
+        if input_dict.get('class') != self.serializing_class:
+            raise UnparseableDictError
+        # Here, in the future, version upgrade logic will be injected
+        if input_dict.get('version', 0) > self.serializing_version:
+            raise UnsupportedVersionDictError
+        if input_dict.get('version') != self.serializing_version: 
+            raise UnparseableDictError
+        #
+        return self.set_instantiator(
+            self.int_utils.from_dict(interval_dict)
+            for interval_dict in input_dict['intervals']
+        )
 
     def empty(self):
         """

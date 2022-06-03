@@ -33,3 +33,13 @@ class UnserializableItemError(ValueError):
     An attempt to convert an interval*/set* to json is made
     for an object whose domain data type admits no serializable form.
     """
+
+class UnparseableDictError(ValueError):
+    """
+    An attempt to parse an invalid dict back to an interval* or intervalset*
+    """
+
+class UnsupportedVersionDictError(ValueError):
+    """
+    The version of this dict is too new to be hydrated back to an object.
+    """

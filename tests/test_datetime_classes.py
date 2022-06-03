@@ -76,3 +76,6 @@ class TestDatetimeClasses(unittest.TestCase):
             dseti,
             self.isu.point(date0) + self.isu.point(date1) + self.isb[date2][date2]
         )
+
+if __name__ == "__main__":
+    unittest.main()

@@ -28,6 +28,9 @@ class Interval:
     @staticmethod
     def value_encoder(v): return v
 
+    serializing_class = 'Interval'
+    serializing_version = 1
+
     @staticmethod
     def builder():
         """Create and return a "builder" for these intervals."""
@@ -36,7 +39,12 @@ class Interval:
     @staticmethod
     def utils():
         """Create an "interval utils" object for these intervals."""
-        return IntervalGenericUtils(int_instantiator=Interval)
+        return IntervalGenericUtils(
+            int_instantiator=Interval,
+            value_decoder=lambda v: v,
+            serializing_class='Interval',
+            serializing_version=1,
+        )
 
     ## "Regular methods" follow (which use instantiations from the meta part).
 
@@ -78,7 +86,8 @@ class Interval:
         """
         if self.value_encoder:
             return {
-                # other properties here [...]
+                'class': self.serializing_class,
+                'version': self.serializing_version,
                 'pegs': [
                     self.begin.to_dict(v_encoder=self.value_encoder),
                     self.end.to_dict(v_encoder=self.value_encoder),

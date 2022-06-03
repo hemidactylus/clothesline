@@ -50,6 +50,8 @@ class StringIntervalSet(IntervalSet):
     A string-interval-set.
     """
 
+    metric = None
+
     @staticmethod
     def builder():
         """

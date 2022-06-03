@@ -7,16 +7,36 @@ is set per-instance, so this serves as a generic class template.
 from clothesline.interval_peg import IntervalPeg
 from clothesline.algebra.symbols import PlusInf, MinusInf
 
+from clothesline.exceptions import UnparseableDictError, UnserializableItemError, UnsupportedVersionDictError
+
 
 class IntervalGenericUtils:
 
-    def __init__(self, int_instantiator):
+    def __init__(self, int_instantiator, value_decoder=None, serializing_class=None, serializing_version=None):
         """
         When creating an utils instance, which can create intervals*,
         the instantiator that must be passed is a function that makes
         its two arguments (peg0, peg1) into an interval of the desired type.
         """
         self.int_instantiator = int_instantiator
+        self.value_decoder = value_decoder
+        self.serializing_class = serializing_class
+        self.serializing_version = serializing_version
+
+    def from_dict(self, input_dict):
+        if not self.value_decoder:
+            raise UnserializableItemError
+        if input_dict.get('class') != self.serializing_class:
+            raise UnparseableDictError
+        # Here, in the future, version upgrade logic will be injected
+        if input_dict.get('version', 0) > self.serializing_version:
+            raise UnsupportedVersionDictError
+        if input_dict.get('version') != self.serializing_version: 
+            raise UnparseableDictError
+        return self.int_instantiator(
+            IntervalPeg.from_dict(input_dict['pegs'][0], v_decoder=self.value_decoder),
+            IntervalPeg.from_dict(input_dict['pegs'][1], v_decoder=self.value_decoder),
+        )
 
     def open(self, value_begin, value_end):
         """

@@ -48,7 +48,10 @@ class IntervalSet:
         """
         Create an interval set builder.
         """
-        return IntervalGenericBuilder(interval_class=Interval, interval_set_class=IntervalSet)
+        return IntervalGenericBuilder(
+            interval_class=Interval,
+            interval_set_class=IntervalSet,
+        )
 
     @staticmethod
     def utils():
@@ -56,10 +59,8 @@ class IntervalSet:
         Create an "utils" object, offering standard intervalset* creation.
         """
         return IntervalSetGenericUtils(
-            set_instantiator=lambda ints: IntervalSet(ints),
-            int_utils=Interval.utils(),
-            serializing_class='IntervalSet',
-            serializing_version=1,
+            interval_class=Interval,
+            interval_set_class=IntervalSet,
         )
 
     @staticmethod

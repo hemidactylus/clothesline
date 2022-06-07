@@ -38,7 +38,10 @@ class StringInterval(Interval):
         """
         The builder peg-pair -> string interval.
         """
-        return IntervalGenericBuilder(interval_class=StringInterval, interval_set_class=None)
+        return IntervalGenericBuilder(
+            interval_class=StringInterval,
+            interval_set_class=None,
+        )
 
     @staticmethod
     def utils():
@@ -55,12 +58,18 @@ class StringIntervalSet(IntervalSet):
 
     metric = None
 
+    serializing_class = None
+    serializing_version = None
+
     @staticmethod
     def builder():
         """
         String-interval-set builder.
         """
-        return IntervalGenericBuilder(interval_class=StringInterval, interval_set_class=StringIntervalSet)
+        return IntervalGenericBuilder(
+            interval_class=StringInterval,
+            interval_set_class=StringIntervalSet,
+        )
 
     @staticmethod
     def utils():
@@ -69,8 +78,8 @@ class StringIntervalSet(IntervalSet):
         interval sets as instance of this subclass.
         """
         return IntervalSetGenericUtils(
-            set_instantiator=lambda ints: StringIntervalSet(ints),
-            int_utils=StringInterval.utils(),
+            interval_class=StringInterval,
+            interval_set_class=StringIntervalSet,
         )
 
     @staticmethod

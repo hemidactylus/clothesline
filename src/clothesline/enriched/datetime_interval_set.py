@@ -55,7 +55,10 @@ class DatetimeInterval(Interval):
         Return a builder configured to make peg pairs into
         these types of intervals.
         """
-        return IntervalGenericBuilder(interval_class=DatetimeInterval, interval_set_class=None)
+        return IntervalGenericBuilder(
+            interval_class=DatetimeInterval,
+            interval_set_class=None,
+        )
 
     @staticmethod
     def utils():
@@ -85,7 +88,10 @@ class DatetimeIntervalSet(IntervalSet):
         Return a builder configured to make peg pairs into
         these types of interval sets.
         """
-        return IntervalGenericBuilder(interval_class=DatetimeInterval, interval_set_class=DatetimeIntervalSet)
+        return IntervalGenericBuilder(
+            interval_class=DatetimeInterval,
+            interval_set_class=DatetimeIntervalSet,
+        )
 
     @staticmethod
     def utils():
@@ -94,10 +100,8 @@ class DatetimeIntervalSet(IntervalSet):
         interval sets as instance of this subclass.
         """
         return IntervalSetGenericUtils(
-            set_instantiator=lambda ints: DatetimeIntervalSet(ints),
-            int_utils=DatetimeInterval.utils(),
-            serializing_class='DatetimeIntervalSet',
-            serializing_version=1,
+            interval_class=DatetimeInterval,
+            interval_set_class=DatetimeIntervalSet,
         )
 
     @staticmethod

@@ -79,8 +79,6 @@ class DatetimeIntervalSet(IntervalSet):
 
     interval_class=DatetimeInterval
 
-    metric = DatetimeMetric
-
     serializing_class = 'DatetimeIntervalSet'
     serializing_version = 1
 

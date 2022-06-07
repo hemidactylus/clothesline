@@ -58,8 +58,6 @@ class StringIntervalSet(IntervalSet):
 
     interval_class = StringInterval
 
-    metric = None
-
     serializing_class = None
     serializing_version = None
 

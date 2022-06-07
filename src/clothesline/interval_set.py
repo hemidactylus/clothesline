@@ -23,24 +23,18 @@ class IntervalSet:
     defined by an arbitrary (finite) number of Interval objects.
 
     References to `IntervalSet` itself are to be limited and controlled,
-    so that a superclass (e.g. providing metric/serialization etc) has
+    so that a superclass (e.g. providing special metric/serialization etc) has
     no trouble.
 
-    IntervalSet is the "minimal" interval set class:
-        - no metric is assumed
-        - no special needs for serializability are allowed.
-
     Richer classes with metric/serializability requirements have to
-    subclass this one and just redefine builder() and utils(),
-    which are the only method where explicit class references
+    subclass this one and just redefine builder(), utils() and a few properties
+    which are the only places where explicit class references
     (for instantiation) can be used.
     """
 
     ## "Meta part", i.e. items to override when subclassing.
 
     interval_class = Interval
-
-    metric = DomainMetric
 
     serializing_class = 'IntervalSet'
     serializing_version = 1
@@ -98,12 +92,12 @@ class IntervalSet:
         return any(interval.contains(value) for interval in self._intervals)
 
     def extension(self):
-        if self.metric:
-            def c_sum(v1, v2): return x_sum(v1, v2, self.metric.adder)
+        if self.interval_class.metric:
+            def c_sum(v1, v2): return x_sum(v1, v2, self.interval_class.metric.adder)
             return reduce(
                 c_sum,
                 (interval.extension() for interval in self._intervals),
-                self.metric.zero,
+                self.interval_class.metric.zero,
             )
         else:
             raise MetricNotImplementedError

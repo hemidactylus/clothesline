@@ -12,16 +12,17 @@ from clothesline.exceptions import UnparseableDictError, UnserializableItemError
 
 class IntervalGenericUtils:
 
-    def __init__(self, int_instantiator, value_decoder=None, serializing_class=None, serializing_version=None):
+    def __init__(self, interval_class):
         """
         When creating an utils instance, which can create intervals*,
-        the instantiator that must be passed is a function that makes
-        its two arguments (peg0, peg1) into an interval of the desired type.
+        the interval_class that must be passed is a function (constructor)
+        that makes its two arguments (peg0, peg1) into an interval of the
+        desired type.
         """
-        self.int_instantiator = int_instantiator
-        self.value_decoder = value_decoder
-        self.serializing_class = serializing_class
-        self.serializing_version = serializing_version
+        self.interval_class = interval_class
+        self.value_decoder = self.interval_class.value_decoder
+        self.serializing_class = self.interval_class.serializing_class
+        self.serializing_version = self.interval_class.serializing_version
 
     def from_dict(self, input_dict):
         if not self.value_decoder:
@@ -33,7 +34,7 @@ class IntervalGenericUtils:
             raise UnsupportedVersionDictError
         if input_dict.get('version') != self.serializing_version: 
             raise UnparseableDictError
-        return self.int_instantiator(
+        return self.interval_class(
             IntervalPeg.from_dict(input_dict['pegs'][0], v_decoder=self.value_decoder),
             IntervalPeg.from_dict(input_dict['pegs'][1], v_decoder=self.value_decoder),
         )
@@ -88,7 +89,7 @@ class IntervalGenericUtils:
             False,
         )
 
-    def all(self, ):
+    def all(self):
         """
         Return the "whole of it" interval.
         """
@@ -103,7 +104,7 @@ class IntervalGenericUtils:
         """
         Directly create an interval from the values and the open/closed specs.
         """
-        return self.int_instantiator(
+        return self.interval_class(
             IntervalPeg(value_begin, begin_included),
             IntervalPeg(value_end, end_included),
         )

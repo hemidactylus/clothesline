@@ -28,6 +28,9 @@ class Interval:
     @staticmethod
     def value_encoder(v): return v
 
+    @staticmethod
+    def value_decoder(v): return v
+
     serializing_class = 'Interval'
     serializing_version = 1
 
@@ -39,12 +42,7 @@ class Interval:
     @staticmethod
     def utils():
         """Create an "interval utils" object for these intervals."""
-        return IntervalGenericUtils(
-            int_instantiator=Interval,
-            value_decoder=lambda v: v,
-            serializing_class='Interval',
-            serializing_version=1,
-        )
+        return IntervalGenericUtils(interval_class=Interval)
 
     ## "Regular methods" follow (which use instantiations from the meta part).
 

@@ -29,6 +29,9 @@ class StringInterval(Interval):
     metric = None
 
     value_encoder = None
+    value_decoder = None
+    serializing_class = None
+    serializing_version = None
 
     @staticmethod
     def builder():
@@ -42,7 +45,7 @@ class StringInterval(Interval):
         """
         String-interval utils
         """
-        return IntervalGenericUtils(int_instantiator=StringInterval)
+        return IntervalGenericUtils(interval_class=StringInterval)
 
 
 class StringIntervalSet(IntervalSet):

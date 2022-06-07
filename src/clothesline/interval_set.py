@@ -48,7 +48,7 @@ class IntervalSet:
         """
         Create an interval set builder.
         """
-        return IntervalGenericBuilder(finalizer=lambda pegs: IntervalSet([Interval(*pegs)]))
+        return IntervalGenericBuilder(interval_class=Interval, interval_set_class=IntervalSet)
 
     @staticmethod
     def utils():

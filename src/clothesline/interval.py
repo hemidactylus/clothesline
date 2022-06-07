@@ -34,7 +34,7 @@ class Interval:
     @staticmethod
     def builder():
         """Create and return a "builder" for these intervals."""
-        return IntervalGenericBuilder(finalizer=lambda pegs: Interval(*pegs))
+        return IntervalGenericBuilder(interval_class=Interval, interval_set_class=None)
 
     @staticmethod
     def utils():

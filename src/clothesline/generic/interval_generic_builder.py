@@ -51,15 +51,19 @@ class IntervalGenericBuilder():
         def __getitem__(self, value):
             return self._complete(value, True)
 
-    def __init__(self, finalizer):
+    def __init__(self, interval_class, interval_set_class):
         """
-        When creating an IntervalGenericBuilder instance one passes
-        a finalizer, i.e. a function from a 2-element list of pegs
-        to the newly-created instance of interval*.
-
-        Additional context is to be passed here (to be implemented).
+        When creating an IntervalGenericBuilder instance a class name
+        for an interval class must be passed (a constructor ready to accept
+        two pegs).
+        Additionally, to have the builder create intervasets*, one passes
+        the class for the corresponding intervalset*.
+        Internally, suitable "finalizers" are crafted out of these two inputs.
         """
-        self._finalizer = finalizer
+        if interval_set_class is None:
+            self._finalizer = lambda pegs: interval_class(*pegs)
+        else:
+            self._finalizer = lambda pegs: interval_set_class([interval_class(*pegs)])
 
     def _start_building(self, value, included):
         """

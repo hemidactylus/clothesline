@@ -51,7 +51,7 @@ class DatetimeInterval(Interval):
         Return a builder configured to make peg pairs into
         these types of intervals.
         """
-        return IntervalGenericBuilder(finalizer=lambda pegs: DatetimeInterval(*pegs))
+        return IntervalGenericBuilder(interval_class=DatetimeInterval, interval_set_class=None)
 
     @staticmethod
     def utils():
@@ -86,7 +86,7 @@ class DatetimeIntervalSet(IntervalSet):
         Return a builder configured to make peg pairs into
         these types of interval sets.
         """
-        return IntervalGenericBuilder(finalizer = lambda pegs: DatetimeIntervalSet([DatetimeInterval(*pegs)]))
+        return IntervalGenericBuilder(interval_class=DatetimeInterval, interval_set_class=DatetimeIntervalSet)
 
     @staticmethod
     def utils():

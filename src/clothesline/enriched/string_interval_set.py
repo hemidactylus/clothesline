@@ -35,7 +35,7 @@ class StringInterval(Interval):
         """
         The builder peg-pair -> string interval.
         """
-        return IntervalGenericBuilder(finalizer=lambda pegs: StringInterval(*pegs))
+        return IntervalGenericBuilder(interval_class=StringInterval, interval_set_class=None)
 
     @staticmethod
     def utils():
@@ -57,7 +57,7 @@ class StringIntervalSet(IntervalSet):
         """
         String-interval-set builder.
         """
-        return IntervalGenericBuilder(finalizer = lambda pegs: StringIntervalSet([StringInterval(*pegs)]))
+        return IntervalGenericBuilder(interval_class=StringInterval, interval_set_class=StringIntervalSet)
 
     @staticmethod
     def utils():

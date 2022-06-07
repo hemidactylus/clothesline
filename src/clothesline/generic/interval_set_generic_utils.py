@@ -12,13 +12,14 @@ from clothesline.exceptions import UnparseableDictError, UnserializableItemError
 
 class IntervalSetGenericUtils:
 
-    def __init__(self, interval_class, interval_set_class):
+    def __init__(self, interval_set_class):
         """
         An instance of IntervalSetGenericUtils needs to know what class
         to use to create intervalsets* (and intervals*).
         From this knowledge, all other properties and instantiators
         are crafted internally (also to create the right type of objects).
         """
+        interval_class = interval_set_class.interval_class
         self.set_instantiator = lambda ints: interval_set_class(ints)
         self.int_utils = interval_class.utils()
         self.serializing_class = interval_set_class.serializing_class

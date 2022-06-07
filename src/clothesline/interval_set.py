@@ -38,6 +38,8 @@ class IntervalSet:
 
     ## "Meta part", i.e. items to override when subclassing.
 
+    interval_class = Interval
+
     metric = DomainMetric
 
     serializing_class = 'IntervalSet'
@@ -49,7 +51,6 @@ class IntervalSet:
         Create an interval set builder.
         """
         return IntervalGenericBuilder(
-            interval_class=Interval,
             interval_set_class=IntervalSet,
         )
 
@@ -59,23 +60,12 @@ class IntervalSet:
         Create an "utils" object, offering standard intervalset* creation.
         """
         return IntervalSetGenericUtils(
-            interval_class=Interval,
             interval_set_class=IntervalSet,
         )
-
-    @staticmethod
-    def interval_class():
-        """
-        Return the class object of the interval* related to this set.
-        """
-        return Interval
 
     ## "Regular methods" follow (which use instantiations from the meta part).
 
     def __init__(self, intervals):
-        """`intervals` is a list of Interval instances."""
-        self._interval_class = self.interval_class()
-        # _normalize expects _interval_class to be set:
         self._intervals = self._normalize(intervals)
 
     def _normalize(self, intervals):
@@ -84,7 +74,7 @@ class IntervalSet:
         is reduced to 'normal form' using the one-single-list
         form of the generic combiner.
         """
-        return combine_intervals(self._interval_class, [intervals])
+        return combine_intervals(self.interval_class, [intervals])
 
     def to_dict(self):
         """
@@ -159,7 +149,7 @@ class IntervalSet:
         """
         return self.__class__(
             combine_intervals(
-                self._interval_class,
+                self.interval_class,
                 [self._intervals, other.intervals()],
                 combiner_function=lambda q: q[0] or q[1],
             )
@@ -171,7 +161,7 @@ class IntervalSet:
         """
         return self.__class__(
             combine_intervals(
-                self._interval_class,
+                self.interval_class,
                 [self._intervals, other.intervals()],
                 combiner_function=lambda q: q[0] and not q[1],
             )
@@ -183,7 +173,7 @@ class IntervalSet:
         """
         return self.__class__(
             combine_intervals(
-                self._interval_class,
+                self.interval_class,
                 [self._intervals, other.intervals()],
                 combiner_function=lambda q: q[0] and q[1],
             )
@@ -195,7 +185,7 @@ class IntervalSet:
         """
         return self.__class__(
             combine_intervals(
-                self._interval_class,
+                self.interval_class,
                 [self._intervals, other.intervals()],
                 combiner_function=lambda q: q[0] ^ q[1],
             )

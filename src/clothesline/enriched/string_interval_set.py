@@ -56,6 +56,8 @@ class StringIntervalSet(IntervalSet):
     A string-interval-set.
     """
 
+    interval_class = StringInterval
+
     metric = None
 
     serializing_class = None
@@ -67,7 +69,6 @@ class StringIntervalSet(IntervalSet):
         String-interval-set builder.
         """
         return IntervalGenericBuilder(
-            interval_class=StringInterval,
             interval_set_class=StringIntervalSet,
         )
 
@@ -78,13 +79,5 @@ class StringIntervalSet(IntervalSet):
         interval sets as instance of this subclass.
         """
         return IntervalSetGenericUtils(
-            interval_class=StringInterval,
             interval_set_class=StringIntervalSet,
         )
-
-    @staticmethod
-    def interval_class():
-        """
-        Return the interval class this set is made of.
-        """
-        return StringInterval

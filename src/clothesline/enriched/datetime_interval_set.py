@@ -77,6 +77,8 @@ class DatetimeIntervalSet(IntervalSet):
     For these interval sets, values are `datetime`.
     """
 
+    interval_class=DatetimeInterval
+
     metric = DatetimeMetric
 
     serializing_class = 'DatetimeIntervalSet'
@@ -89,7 +91,6 @@ class DatetimeIntervalSet(IntervalSet):
         these types of interval sets.
         """
         return IntervalGenericBuilder(
-            interval_class=DatetimeInterval,
             interval_set_class=DatetimeIntervalSet,
         )
 
@@ -100,13 +101,5 @@ class DatetimeIntervalSet(IntervalSet):
         interval sets as instance of this subclass.
         """
         return IntervalSetGenericUtils(
-            interval_class=DatetimeInterval,
             interval_set_class=DatetimeIntervalSet,
         )
-
-    @staticmethod
-    def interval_class():
-        """
-        Return the interval class this set is made of.
-        """
-        return DatetimeInterval

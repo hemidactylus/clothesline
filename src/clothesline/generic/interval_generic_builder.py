@@ -4,6 +4,9 @@ The actual class used to instantiate the interval* once completed is passed
 when instantiating the builder: so, this "interface" can offer a standard
 syntax yet result in the creation of intervals, interval sets and also
 other types of intervalsets (e.g. enriched with metrics and so on).
+
+Note: contrary to the 'utils' generic tools, this one is able to create
+both intervals* and intervalsets* (depending on how initialized).
 """
 
 from clothesline.algebra.symbols import PlusInf, MinusInf
@@ -51,19 +54,20 @@ class IntervalGenericBuilder():
         def __getitem__(self, value):
             return self._complete(value, True)
 
-    def __init__(self, interval_class, interval_set_class):
+    def __init__(self, interval_class=None, interval_set_class=None):
         """
         When creating an IntervalGenericBuilder instance a class name
         for an interval class must be passed (a constructor ready to accept
         two pegs).
-        Additionally, to have the builder create intervasets*, one passes
+        Alternatively, to have the builder create intervalsets*, one passes
         the class for the corresponding intervalset*.
-        Internally, suitable "finalizers" are crafted out of these two inputs.
+        Internally, suitable "finalizers" are crafted out of these inputs.
         """
         if interval_set_class is None:
             self._finalizer = lambda pegs: interval_class(*pegs)
         else:
-            self._finalizer = lambda pegs: interval_set_class([interval_class(*pegs)])
+            _interval_class = interval_set_class.interval_class
+            self._finalizer = lambda pegs: interval_set_class([_interval_class(*pegs)])
 
     def _start_building(self, value, included):
         """

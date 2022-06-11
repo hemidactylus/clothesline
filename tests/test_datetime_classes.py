@@ -61,7 +61,9 @@ class TestDatetimeClasses(unittest.TestCase):
         #
         dset1 = self.isb(date0)(date1) + self.isu.high_slice(date2)
         dset2 = dset1.complement()
-        dset1b = self.isb[date0][date1] + self.isu.high_slice(date2, included=True)
+        dset1b = self.isb[date0][date1] + self.isu.high_slice(
+            date2, included=True
+        )  # noqa: E501
         dseti = dset2.intersect(dset1b)
         #
         self.assertIs(
@@ -74,8 +76,11 @@ class TestDatetimeClasses(unittest.TestCase):
         )
         self.assertEqual(
             dseti,
-            self.isu.point(date0) + self.isu.point(date1) + self.isb[date2][date2]
+            self.isu.point(date0)
+            + self.isu.point(date1)  # noqa: W503
+            + self.isb[date2][date2],  # noqa: E501, W503
         )
+
 
 if __name__ == "__main__":
     unittest.main()

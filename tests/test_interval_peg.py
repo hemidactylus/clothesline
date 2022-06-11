@@ -24,7 +24,9 @@ class TestIntervalPeg(unittest.TestCase):
     def test_hashable_pegs(self):
         """Hashability and equality tests"""
         self.assertTrue(IntervalPeg(0.0, True) == IntervalPeg(0.0, True))
-        self.assertTrue(IntervalPeg(PlusInf, False) == IntervalPeg(PlusInf, False))
+        self.assertTrue(
+            IntervalPeg(PlusInf, False) == IntervalPeg(PlusInf, False)
+        )  # noqa: E501
         self.assertFalse(IntervalPeg(PlusInf, False) == IntervalPeg(0.0, True))
         self.assertFalse(IntervalPeg(0.0, False) == IntervalPeg(0.0, True))
         self.assertFalse(IntervalPeg(0.0, False) == IntervalPeg(1.0, False))
@@ -38,7 +40,7 @@ class TestIntervalPeg(unittest.TestCase):
                     IntervalPeg(PlusInf, not True),
                 }
             )
-            == 2
+            == 2  # noqa: W503
         )
 
 

@@ -126,38 +126,38 @@ class TestRealInterval(unittest.TestCase):
         peg1 = IntervalPeg(0.0, True)
         peg2 = IntervalPeg(PlusInf, False)
         itv = self.int_utils.interval(0.0, True, PlusInf, False)
-        pegsGen = itv.pegs()
-        self.assertEqual(pegsGen.__next__(), peg1)
-        self.assertEqual(pegsGen.__next__(), peg2)
+        pegs_gen = itv.pegs()
+        self.assertEqual(pegs_gen.__next__(), peg1)
+        self.assertEqual(pegs_gen.__next__(), peg2)
         with self.assertRaises(StopIteration):
-            pegsGen.__next__()
+            pegs_gen.__next__()
 
     def test_builder(self):
         """Builder notation must give the same result as explicit creation."""
-        b = RealInterval.builder()
+        bld = RealInterval.builder()
         self.assertEqual(
             self.i_open,
-            b(0)(1),
+            bld(0)(1),
         )
         self.assertEqual(
             self.i_closed,
-            b[0][1],
+            bld[0][1],
         )
         self.assertEqual(
             self.i_low_slice,
-            b(...)(0),
+            bld(...)(0),
         )
         self.assertEqual(
             self.i_high_slice_c,
-            b[0][...],
+            bld[0][...],
         )
         self.assertEqual(
             self.i_all,
-            b[...](...),
+            bld[...](...),
         )
         self.assertEqual(
             self.i_int,
-            b[0](1),
+            bld[0](1),
         )
 
     def test_hash(self):
@@ -171,8 +171,9 @@ class TestRealInterval(unittest.TestCase):
                     self.int_utils.interval(MinusInf, False, PlusInf, False),
                 }
             )
-            == 2
+            == 2  # noqa: W503
         )
+
 
 if __name__ == "__main__":
     unittest.main()

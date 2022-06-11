@@ -7,9 +7,17 @@ import unittest
 
 from clothesline.algebra.symbols import PlusInf, MinusInf
 from clothesline.algebra.symbols import is_symbol
-from clothesline.algebra.symbols import x_equals, x_gt, x_lt, x_ge, x_le, x_cmp, x_sum, x_subtract
+from clothesline.algebra.symbols import (
+    x_equals,
+    x_gt,
+    x_lt,
+    x_ge,
+    x_le,
+    x_cmp,
+    x_sum,
+    x_subtract,
+)
 
-#
 from clothesline.exceptions import IndeterminateFormError
 
 
@@ -86,6 +94,7 @@ class TestSymbols(unittest.TestCase):
         self.assertFalse(x_le(PlusInf, 0.0))
 
     def test_sorting(self):
+        """Sorting of symbols and domain values."""
         s_key = cmp_to_key(x_cmp)
         self.assertEqual(
             sorted(
@@ -97,7 +106,7 @@ class TestSymbols(unittest.TestCase):
 
     def test_hashable(self):
         """Hashability and equality tests"""
-        self.assertTrue(PlusInf == PlusInf)
+        self.assertTrue(PlusInf == PlusInf)  # noqa: PLR0124
         self.assertFalse(PlusInf == MinusInf)
         self.assertFalse(PlusInf == 0.0)
         #
@@ -111,39 +120,49 @@ class TestSymbols(unittest.TestCase):
                     1.0 + 1.0,
                 }
             )
-            == 3
+            == 3  # noqa: W503
         )
 
     def test_arithmetic(self):
         """Arithmetic operations with symbols."""
-        def _adder(v1, v2): return v1 + v2
-        def xx_sum(v1, v2): return x_sum(v1, v2, _adder)
-        def _subtracter(v1, v2): return v1 - v2
-        def xx_subtract(v1, v2): return x_subtract(v1, v2, _subtracter)
+
+        def _adder(val1, val2):
+            return val1 + val2
+
+        def xx_sum(val1, val2):
+            return x_sum(val1, val2, _adder)
+
+        def _subtracter(val1, val2):
+            return val1 - val2
+
+        def xx_subtract(val1, val2):
+            return x_subtract(val1, val2, _subtracter)
+
         # sums
-        self.assertEqual(xx_sum( PlusInf,  PlusInf),  PlusInf)
+        self.assertEqual(xx_sum(PlusInf, PlusInf), PlusInf)
         with self.assertRaises(IndeterminateFormError):
-            xx_sum( PlusInf, MinusInf)
-        self.assertEqual(xx_sum( PlusInf,        1),  PlusInf)
+            xx_sum(PlusInf, MinusInf)
+        self.assertEqual(xx_sum(PlusInf, 1), PlusInf)
         with self.assertRaises(IndeterminateFormError):
-            xx_sum(MinusInf,  PlusInf)
+            xx_sum(MinusInf, PlusInf)
         self.assertEqual(xx_sum(MinusInf, MinusInf), MinusInf)
-        self.assertEqual(xx_sum(MinusInf,        1), MinusInf)
-        self.assertEqual(xx_sum(       1,  PlusInf),  PlusInf)
-        self.assertEqual(xx_sum(       1, MinusInf), MinusInf)
-        self.assertEqual(xx_sum(       1,        1),        2)
+        self.assertEqual(xx_sum(MinusInf, 1), MinusInf)
+        self.assertEqual(xx_sum(1, PlusInf), PlusInf)
+        self.assertEqual(xx_sum(1, MinusInf), MinusInf)
+        self.assertEqual(xx_sum(1, 1), 2)
         # differences
-        self.assertEqual(xx_subtract( PlusInf, MinusInf),  PlusInf)
+        self.assertEqual(xx_subtract(PlusInf, MinusInf), PlusInf)
         with self.assertRaises(IndeterminateFormError):
-            xx_subtract( PlusInf, PlusInf)
-        self.assertEqual(xx_subtract( PlusInf,        1),  PlusInf)
+            xx_subtract(PlusInf, PlusInf)
+        self.assertEqual(xx_subtract(PlusInf, 1), PlusInf)
         with self.assertRaises(IndeterminateFormError):
-            xx_subtract(MinusInf,  MinusInf)
-        self.assertEqual(xx_subtract(MinusInf,  PlusInf), MinusInf)
-        self.assertEqual(xx_subtract(MinusInf,        1), MinusInf)
-        self.assertEqual(xx_subtract(       1, MinusInf),  PlusInf)
-        self.assertEqual(xx_subtract(       1,  PlusInf), MinusInf)
-        self.assertEqual(xx_subtract(       1,        1),        0)
+            xx_subtract(MinusInf, MinusInf)
+        self.assertEqual(xx_subtract(MinusInf, PlusInf), MinusInf)
+        self.assertEqual(xx_subtract(MinusInf, 1), MinusInf)
+        self.assertEqual(xx_subtract(1, MinusInf), PlusInf)
+        self.assertEqual(xx_subtract(1, PlusInf), MinusInf)
+        self.assertEqual(xx_subtract(1, 1), 0)
+
 
 if __name__ == "__main__":
     unittest.main()

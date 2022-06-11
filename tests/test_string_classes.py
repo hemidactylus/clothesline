@@ -4,7 +4,10 @@ Tests for the string-interval/set classes
 
 import unittest
 
-from clothesline.enriched.string_interval_set import StringIntervalSet, StringInterval
+from clothesline.enriched.string_interval_set import (
+    StringIntervalSet,
+    StringInterval,
+)  # noqa: E501
 
 
 class TestStringClasses(unittest.TestCase):
@@ -21,7 +24,7 @@ class TestStringClasses(unittest.TestCase):
 
     def test_string_interval(self):
         """StringInterval builders and utils"""
-        string1 = 'some_string'
+        string1 = "some_string"
         self.assertEqual(
             self.iu.high_slice(string1),
             self.ib(string1)(...),
@@ -37,7 +40,7 @@ class TestStringClasses(unittest.TestCase):
 
     def test_string_interval_set(self):
         """StringIntervalSet builders and utils"""
-        string1 = 'some_string'
+        string1 = "some_string"
         self.assertEqual(
             self.isu.high_slice(string1),
             self.isb(string1)(...),
@@ -53,13 +56,15 @@ class TestStringClasses(unittest.TestCase):
 
     def test_algebra(self):
         """Basic algebra using DateimeIntervalSet"""
-        string0 = 'a'
-        string1 = 'ab'
-        string2 = 'az'
+        string0 = "a"
+        string1 = "ab"
+        string2 = "az"
         #
         sset1 = self.isb(string0)(string1) + self.isu.high_slice(string2)
         sset2 = sset1.complement()
-        sset1b = self.isb[string0][string1] + self.isu.high_slice(string2, included=True)
+        sset1b = self.isb[string0][string1] + self.isu.high_slice(
+            string2, included=True
+        )
         sseti = sset2.intersect(sset1b)
         #
         self.assertIs(
@@ -72,8 +77,11 @@ class TestStringClasses(unittest.TestCase):
         )
         self.assertEqual(
             sseti,
-            self.isu.point(string0) + self.isu.point(string1) + self.isb[string2][string2]
+            self.isu.point(string0)
+            + self.isu.point(string1)  # noqa: W503
+            + self.isb[string2][string2],  # noqa: W503
         )
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -17,7 +17,9 @@ from clothesline.base.base_domain_metric import BaseDomainMetric
 
 from clothesline.generic.interval_generic_builder import IntervalGenericBuilder
 from clothesline.generic.interval_generic_utils import IntervalGenericUtils
-from clothesline.generic.interval_set_generic_utils import IntervalSetGenericUtils  # noqa: E501
+from clothesline.generic.interval_set_generic_utils import (
+    IntervalSetGenericUtils,
+)  # noqa: E501
 
 
 class DatetimeMetric(BaseDomainMetric):
@@ -59,7 +61,7 @@ class DatetimeInterval(BaseInterval):
         """domain decoder: timestamp -> datetime."""
         return datetime.datetime.fromtimestamp(val)
 
-    serializing_class = 'DatetimeInterval'
+    serializing_class = "DatetimeInterval"
     serializing_version = 1
 
     @staticmethod
@@ -92,7 +94,7 @@ class DatetimeIntervalSet(BaseIntervalSet):
 
     interval_class = DatetimeInterval
 
-    serializing_class = 'DatetimeIntervalSet'
+    serializing_class = "DatetimeIntervalSet"
     serializing_version = 1
 
     @staticmethod

@@ -3,6 +3,7 @@ An interval on the usual numeric domain (real numbers).
 """
 
 from clothesline.base.base_interval import BaseInterval
+
 #
 from clothesline.generic.interval_generic_builder import IntervalGenericBuilder
 from clothesline.generic.interval_generic_utils import IntervalGenericUtils
@@ -29,12 +30,16 @@ class RealInterval(BaseInterval):
     metric = RealDomainMetric
 
     @staticmethod
-    def value_encoder(val): return val  # noqa: PLC0116, PLC0321
+    def value_encoder(val):
+        """The trivial encoder."""
+        return val  # noqa: PLC0116, PLC0321
 
     @staticmethod
-    def value_decoder(val): return val  # noqa: PLC0116, PLC0321
+    def value_decoder(val):
+        """The trivial decoder."""
+        return val  # noqa: PLC0116, PLC0321
 
-    serializing_class = 'RealInterval'
+    serializing_class = "RealInterval"
     serializing_version = 1
 
     @staticmethod

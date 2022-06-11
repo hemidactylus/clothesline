@@ -3,7 +3,9 @@ Entry point for easily exposing the useful imports
 """
 
 from clothesline.real_interval_set import RealIntervalSet  # noqa: F401
-from clothesline.enriched.datetime_interval_set import DatetimeIntervalSet  # noqa: F401, E501
+from clothesline.enriched.datetime_interval_set import (  # noqa: F401, E501
+    DatetimeIntervalSet,
+)
 
 
 def main():

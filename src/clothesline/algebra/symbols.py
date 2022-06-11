@@ -47,10 +47,10 @@ def x_to_dict(value, v_encoder):
     Return a json-encodable representation of this extended 'value'.
     """
     if is_symbol(value):  # noqa: PLR1705
-        return {'symbol': value.__repr__()}
+        return {"symbol": value.__repr__()}
     else:
         # "ordinary value"
-        return {'o_value': v_encoder(value)}
+        return {"o_value": v_encoder(value)}
 
 
 def x_from_dict(input_dict, v_decoder):
@@ -58,18 +58,19 @@ def x_from_dict(input_dict, v_decoder):
     Extract a extended value from a dictionary item, leveraging the passed
     decoder.
     """
-    if 'symbol' in input_dict:  # noqa: PLR1705
-        if input_dict['symbol'] == PlusInf.__repr__():  # noqa: PLR1705
+    if "symbol" in input_dict:  # noqa: PLR1705
+        if input_dict["symbol"] == PlusInf.__repr__():  # noqa: PLR1705
             return PlusInf
-        elif input_dict['symbol'] == MinusInf.__repr__():
+        elif input_dict["symbol"] == MinusInf.__repr__():
             return MinusInf
         else:
             raise UnparseableDictError
     else:
-        return v_decoder(input_dict['o_value'])
+        return v_decoder(input_dict["o_value"])
 
 
 # Extensions of arithmetic to "domain + infinities"
+
 
 def x_equals(val1, val2):
     """

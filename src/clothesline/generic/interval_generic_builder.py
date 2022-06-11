@@ -13,7 +13,7 @@ from clothesline.algebra.symbols import PlusInf, MinusInf
 from clothesline.interval_peg import IntervalPeg
 
 
-class IntervalGenericBuilder():
+class IntervalGenericBuilder:
     """
     A builder for some kind of intervals.
     An instance of this class supports a [] and () syntax
@@ -22,7 +22,7 @@ class IntervalGenericBuilder():
     results in creation of an interval*.
     """
 
-    class _builder():
+    class _builder:
         """
         An internal volatile class used to represent, internally,
         states such as `builder(first_peg)`, i.e. ready to accept

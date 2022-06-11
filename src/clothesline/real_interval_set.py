@@ -6,7 +6,10 @@ serializability of its values.
 
 from clothesline.base.base_interval_set import BaseIntervalSet
 from clothesline.generic.interval_generic_builder import IntervalGenericBuilder
-from clothesline.generic.interval_set_generic_utils import IntervalSetGenericUtils  # noqa: E501
+from clothesline.generic.interval_set_generic_utils import (
+    IntervalSetGenericUtils,
+)  # noqa: E501
+
 #
 from clothesline.real_interval import RealInterval
 
@@ -31,7 +34,7 @@ class RealIntervalSet(BaseIntervalSet):
 
     interval_class = RealInterval
 
-    serializing_class = 'RealIntervalSet'
+    serializing_class = "RealIntervalSet"
     serializing_version = 1
 
     @staticmethod

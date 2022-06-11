@@ -10,6 +10,7 @@ from clothesline.algebra.symbols import (
     x_repr,
     x_subtract,
 )
+
 #
 from clothesline.exceptions import (
     InvalidValueError,
@@ -18,7 +19,7 @@ from clothesline.exceptions import (
 )
 
 
-class BaseInterval():
+class BaseInterval:
     """
     A single uninterrupted interval over the domain field:
         [a,b] or (a,b) or (a,b] or [a,b)
@@ -87,12 +88,12 @@ class BaseInterval():
         """
         if self.value_encoder:  # noqa: PLR1705
             return {
-                'class': self.serializing_class,
-                'version': self.serializing_version,
-                'pegs': [
+                "class": self.serializing_class,
+                "version": self.serializing_version,
+                "pegs": [
                     self.begin.to_dict(v_encoder=self.value_encoder),
                     self.end.to_dict(v_encoder=self.value_encoder),
-                ]
+                ],
             }
         else:
             raise UnserializableItemError

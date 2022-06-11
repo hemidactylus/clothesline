@@ -18,7 +18,9 @@ from clothesline.base.base_interval import BaseInterval
 
 from clothesline.generic.interval_generic_builder import IntervalGenericBuilder
 from clothesline.generic.interval_generic_utils import IntervalGenericUtils
-from clothesline.generic.interval_set_generic_utils import IntervalSetGenericUtils  # noqa: E501
+from clothesline.generic.interval_set_generic_utils import (
+    IntervalSetGenericUtils,
+)  # noqa: E501
 
 
 class StringInterval(BaseInterval):

@@ -6,6 +6,7 @@ from functools import reduce
 
 from clothesline.algebra import combine_intervals
 from clothesline.algebra.symbols import x_sum
+
 #
 from clothesline.exceptions import MetricNotImplementedError
 
@@ -57,12 +58,9 @@ class BaseIntervalSet:
         Return a json-encodable representation of this interval set.
         """
         return {
-            'class': self.serializing_class,
-            'version': self.serializing_version,
-            'intervals': [
-                interval.to_dict()
-                for interval in self._intervals
-            ]
+            "class": self.serializing_class,
+            "version": self.serializing_version,
+            "intervals": [interval.to_dict() for interval in self._intervals],
         }
 
     def contains(self, value):
@@ -79,12 +77,14 @@ class BaseIntervalSet:
         use it to compute this interval set's (overall) 'extension'.
         """
         if self.interval_class.metric:  # noqa: PLR1705
+
             def c_sum(val1, val2):
                 return x_sum(
                     val1,
                     val2,
                     self.interval_class.metric.adder,
                 )
+
             return reduce(
                 c_sum,
                 (interval.extension() for interval in self._intervals),
@@ -101,22 +101,20 @@ class BaseIntervalSet:
         )
 
     def __hash__(self):
-        return hash((
-            self.__class__,
-            tuple((
-                hash(interval)
-                for interval in self._intervals
-            ))
-        ))
+        return hash(
+            (
+                self.__class__,
+                tuple((hash(interval) for interval in self._intervals)),
+            )  # noqa: E501
+        )
 
     def __repr__(self):
         if not self._intervals:  # noqa: PLR1705
             return "{}"
         else:
             return " U ".join(
-                interval.__repr__()
-                for interval in self._intervals
-            )
+                interval.__repr__() for interval in self._intervals
+            )  # noqa: E501
 
     def __add__(self, other):
         """Alias for set-wise union."""

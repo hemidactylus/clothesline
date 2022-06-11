@@ -3,7 +3,7 @@ Metric specification for an interval/set.
 """
 
 
-class BaseDomainMetric():
+class BaseDomainMetric:
     """
     Abstract class for creating 'metric' static classes,
     which prescribe how to deal with the concept of interval "length" and
@@ -11,7 +11,7 @@ class BaseDomainMetric():
     """
 
     def __init__(self):
-        raise RuntimeError('This class is static.')
+        raise RuntimeError("This class is static.")
 
     @staticmethod
     def adder(val1, val2):  # noqa: PLW0613

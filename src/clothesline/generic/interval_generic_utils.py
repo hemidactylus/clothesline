@@ -43,20 +43,20 @@ class IntervalGenericUtils:
         """
         if not self.value_decoder:
             raise UnserializableItemError
-        if input_dict.get('class') != self.serializing_class:
+        if input_dict.get("class") != self.serializing_class:
             raise UnparseableDictError
         # Here, in the future, version upgrade logic will be injected
-        if input_dict.get('version', 0) > self.serializing_version:
+        if input_dict.get("version", 0) > self.serializing_version:
             raise UnsupportedVersionDictError
-        if input_dict.get('version') != self.serializing_version:
+        if input_dict.get("version") != self.serializing_version:
             raise UnparseableDictError
         return self.interval_class(
             IntervalPeg.from_dict(
-                input_dict['pegs'][0],
+                input_dict["pegs"][0],
                 v_decoder=self.value_decoder,
             ),
             IntervalPeg.from_dict(
-                input_dict['pegs'][1],
+                input_dict["pegs"][1],
                 v_decoder=self.value_decoder,
             ),
         )

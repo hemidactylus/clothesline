@@ -9,8 +9,11 @@ from clothesline.interval_peg import IntervalPeg
 from clothesline.exceptions import InvalidCombineEndState
 
 
-def combine_intervals(int_maker, interval_iterables,  # noqa: PLR0914, PLR0912
-                      combiner_function=lambda q: q[0]):
+def combine_intervals(  # noqa: PLR0914, PLR0912
+    int_maker,
+    interval_iterables,
+    combiner_function=lambda q: q[0],
+):
     """
     The main workhorse for interval algebra.
     A list of N iterables over intervals is combined according to some
@@ -47,9 +50,8 @@ def combine_intervals(int_maker, interval_iterables,  # noqa: PLR0914, PLR0912
     """
 
     interval_lists = [
-        list(interval_ite)
-        for interval_ite in interval_iterables
-    ]
+        list(interval_ite) for interval_ite in interval_iterables
+    ]  # noqa: E501
     n_i_lists = len(interval_lists)
 
     # 1. 'split' phase

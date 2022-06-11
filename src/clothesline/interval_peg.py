@@ -12,6 +12,7 @@ by outside of this library.
 
 from clothesline.algebra.symbols import is_symbol, x_to_dict, x_from_dict
 from clothesline.algebra.symbols import x_equals
+
 #
 from clothesline.exceptions import InvalidValueError
 
@@ -49,8 +50,8 @@ class IntervalPeg:
         An encoder for the regular domain values is required.
         """
         return {
-            'value': x_to_dict(self.value, v_encoder=v_encoder),
-            'included': self.included,
+            "value": x_to_dict(self.value, v_encoder=v_encoder),
+            "included": self.included,
         }
 
     @staticmethod
@@ -60,6 +61,6 @@ class IntervalPeg:
         A decoder for the regular domain values is required.
         """
         return IntervalPeg(
-            x_from_dict(input_dict['value'], v_decoder=v_decoder),
-            input_dict['included'],
+            x_from_dict(input_dict["value"], v_decoder=v_decoder),
+            input_dict["included"],
         )

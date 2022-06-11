@@ -44,17 +44,17 @@ class IntervalSetGenericUtils:
         if self.serializing_class is None or self.serializing_version is None:
             raise UnserializableItemError
         #
-        if input_dict.get('class') != self.serializing_class:
+        if input_dict.get("class") != self.serializing_class:
             raise UnparseableDictError
         # Here, in the future, version upgrade logic will be injected
-        if input_dict.get('version', 0) > self.serializing_version:
+        if input_dict.get("version", 0) > self.serializing_version:
             raise UnsupportedVersionDictError
-        if input_dict.get('version') != self.serializing_version:
+        if input_dict.get("version") != self.serializing_version:
             raise UnparseableDictError
         #
         return self.set_instantiator(
             self.int_utils.from_dict(interval_dict)
-            for interval_dict in input_dict['intervals']
+            for interval_dict in input_dict["intervals"]
         )
 
     def empty(self):
@@ -112,9 +112,13 @@ class IntervalSetGenericUtils:
         Directly create an interval set from the values
         and the open/closed specs.
         """
-        return self.set_instantiator([self.int_utils.interval(
-            value_begin,
-            begin_included,
-            value_end,
-            end_included,
-        )])
+        return self.set_instantiator(
+            [
+                self.int_utils.interval(
+                    value_begin,
+                    begin_included,
+                    value_end,
+                    end_included,
+                )
+            ]
+        )

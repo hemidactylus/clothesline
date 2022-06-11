@@ -5,8 +5,7 @@ Tests for serialization of intervals*/sets*
 import json
 import unittest
 
-from clothesline import IntervalSet
-from clothesline.interval import Interval
+from clothesline import RealIntervalSet
 from clothesline.enriched.datetime_interval_set import DatetimeIntervalSet
 from clothesline.enriched.string_interval_set import StringIntervalSet
 
@@ -15,14 +14,14 @@ from clothesline.exceptions import UnserializableItemError
 
 class TestIntervalSetSerialization(unittest.TestCase):
     """
-    Tests for serializing an IntervalSet
+    Tests for serializing an RealIntervalSet
     """
 
     def test_serializability(self):
-        builder = IntervalSet.builder()
+        builder = RealIntervalSet.builder()
         is1 = builder[10](11) + builder[12](...)
         is_dict = is1.to_dict()
-        restored_is1 = IntervalSet.utils().from_dict(is_dict)
+        restored_is1 = RealIntervalSet.utils().from_dict(is_dict)
         self.assertEqual(is1, restored_is1)
 
 

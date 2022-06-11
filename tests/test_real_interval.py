@@ -1,24 +1,24 @@
 """
-Tests for the Interval class
+Tests for the RealInterval class
 """
 
 import unittest
 
 from clothesline.interval_peg import IntervalPeg
-from clothesline.interval import Interval
+from clothesline.real_interval import RealInterval
 from clothesline.algebra.symbols import PlusInf, MinusInf
 
 from clothesline.exceptions import InvalidValueError
 
 
-class TestInterval(unittest.TestCase):
+class TestRealInterval(unittest.TestCase):
     """
-    Tests for the Interval
+    Tests for the RealInterval
     """
 
     @classmethod
     def setUpClass(cls):
-        cls.int_utils = Interval.utils()
+        cls.int_utils = RealInterval.utils()
         cls.i_open = cls.int_utils.open(0.0, 1.0)
         cls.i_closed = cls.int_utils.closed(0.0, 1.0)
         cls.i_low_slice = cls.int_utils.low_slice(0.0)
@@ -29,17 +29,17 @@ class TestInterval(unittest.TestCase):
     def test_invalids(self):
         """ways to generate invalid intervals"""
         with self.assertRaises(InvalidValueError):
-            Interval(
+            RealInterval(
                 IntervalPeg(1.0, False),
                 IntervalPeg(0.0, True),
             )
         with self.assertRaises(InvalidValueError):
-            Interval(
+            RealInterval(
                 IntervalPeg(0.0, False),
                 IntervalPeg(0.0, True),
             )
         with self.assertRaises(InvalidValueError):
-            Interval(
+            RealInterval(
                 IntervalPeg(0.0, False),
                 IntervalPeg(0.0, False),
             )
@@ -48,42 +48,42 @@ class TestInterval(unittest.TestCase):
         """ways to create intervals"""
         self.assertEqual(
             self.i_open,
-            Interval(
+            RealInterval(
                 IntervalPeg(0.0, False),
                 IntervalPeg(1.0, False),
             ),
         )
         self.assertEqual(
             self.i_closed,
-            Interval(
+            RealInterval(
                 IntervalPeg(0.0, True),
                 IntervalPeg(1.0, True),
             ),
         )
         self.assertEqual(
             self.i_low_slice,
-            Interval(
+            RealInterval(
                 IntervalPeg(MinusInf, False),
                 IntervalPeg(0.0, False),
             ),
         )
         self.assertEqual(
             self.i_high_slice_c,
-            Interval(
+            RealInterval(
                 IntervalPeg(0.0, True),
                 IntervalPeg(PlusInf, False),
             ),
         )
         self.assertEqual(
             self.i_all,
-            Interval(
+            RealInterval(
                 IntervalPeg(MinusInf, False),
                 IntervalPeg(PlusInf, False),
             ),
         )
         self.assertEqual(
             self.i_int,
-            Interval(
+            RealInterval(
                 IntervalPeg(0.0, True),
                 IntervalPeg(1.0, False),
             ),
@@ -134,7 +134,7 @@ class TestInterval(unittest.TestCase):
 
     def test_builder(self):
         """Builder notation must give the same result as explicit creation."""
-        b = Interval.builder()
+        b = RealInterval.builder()
         self.assertEqual(
             self.i_open,
             b(0)(1),
@@ -161,7 +161,7 @@ class TestInterval(unittest.TestCase):
         )
 
     def test_hash(self):
-        """Interval's hash function"""
+        """RealInterval's hash function"""
         self.assertTrue(
             len(
                 {

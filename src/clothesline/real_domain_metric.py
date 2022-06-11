@@ -3,7 +3,7 @@ Metric kit to augment Interval and IntervalSet,
 prototypical of analogous augmentations to other intervals*/sets*
 """
 
-class DomainMetric():
+class RealDomainMetric():
 
     def __init__(self):
         raise NotImplementedError('This class is static.')

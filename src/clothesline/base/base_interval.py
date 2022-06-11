@@ -4,50 +4,28 @@ A single interval with a begin and and end, either open or closed at its ends.
 
 from clothesline.algebra.symbols import is_symbol, x_equals, x_lt, x_gt, x_repr, x_subtract
 #
-from clothesline.generic.interval_generic_builder import IntervalGenericBuilder
-from clothesline.generic.interval_generic_utils import IntervalGenericUtils
-from clothesline.domain_metric import DomainMetric
-#
 from clothesline.exceptions import InvalidValueError, MetricNotImplementedError, UnserializableItemError
 
 
-class Interval:
-    """
-    A single uninterrupted interval over the universe field:
-        [a,b] or (a,b) or (a,b] or [a,b)
-    defined by two IntervalPeg objects. It can span to infinities.
+class BaseInterval():
 
-    To allow for proper subclassing, do not mention Interval class
-    explicitly except in the first two 'meta part' methods.
-    """
+    metric = None
 
-    ## "Meta part", i.e. elements to override when subclassing.
+    value_encoder = None
+    value_decoder = None
 
-    metric = DomainMetric
-
-    @staticmethod
-    def value_encoder(v): return v
-
-    @staticmethod
-    def value_decoder(v): return v
-
-    serializing_class = 'Interval'
-    serializing_version = 1
+    serializing_class = None
+    serializing_version = None
 
     @staticmethod
     def builder():
         """Create and return a "builder" for these intervals."""
-        return IntervalGenericBuilder(
-            interval_class=Interval,
-            interval_set_class=None,
-        )
+        ...
 
     @staticmethod
     def utils():
         """Create an "interval utils" object for these intervals."""
-        return IntervalGenericUtils(interval_class=Interval)
-
-    ## "Regular methods" follow (which use instantiations from the meta part).
+        ...
 
     def __init__(self, begin, end):
         """
@@ -66,7 +44,7 @@ class Interval:
         self.end = end
 
     def __eq__(self, other):
-        if isinstance(other, Interval):
+        if isinstance(other, self.__class__):
             return self.begin == other.begin and self.end == other.end
         else:
             return False

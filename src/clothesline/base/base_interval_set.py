@@ -6,58 +6,32 @@ serializability of its values.
 
 from functools import reduce
 
-from clothesline.interval import Interval
 from clothesline.algebra import combine_intervals
 from clothesline.algebra.symbols import x_sum
-#
-from clothesline.generic.interval_generic_builder import IntervalGenericBuilder
-from clothesline.generic.interval_set_generic_utils import IntervalSetGenericUtils
-from clothesline.domain_metric import DomainMetric
 #
 from clothesline.exceptions import MetricNotImplementedError
 
 
-class IntervalSet:
-    """
-    A portion of the continuous line (e.g. the reals + infinities)
-    defined by an arbitrary (finite) number of Interval objects.
+class BaseIntervalSet:
 
-    References to `IntervalSet` itself are to be limited and controlled,
-    so that a superclass (e.g. providing special metric/serialization etc) has
-    no trouble.
+    interval_class = None
 
-    Richer classes with metric/serializability requirements have to
-    subclass this one and just redefine builder(), utils() and a few properties
-    which are the only places where explicit class references
-    (for instantiation) can be used.
-    """
-
-    ## "Meta part", i.e. items to override when subclassing.
-
-    interval_class = Interval
-
-    serializing_class = 'IntervalSet'
-    serializing_version = 1
+    serializing_class = None
+    serializing_version = None
 
     @staticmethod
     def builder():
         """
         Create an interval set builder.
         """
-        return IntervalGenericBuilder(
-            interval_set_class=IntervalSet,
-        )
+        ...
 
     @staticmethod
     def utils():
         """
         Create an "utils" object, offering standard intervalset* creation.
         """
-        return IntervalSetGenericUtils(
-            interval_set_class=IntervalSet,
-        )
-
-    ## "Regular methods" follow (which use instantiations from the meta part).
+        ...
 
     def __init__(self, intervals):
         self._intervals = self._normalize(intervals)

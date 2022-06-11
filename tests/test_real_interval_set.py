@@ -1,25 +1,25 @@
 """
-Tests for the IntervalSet class
+Tests for the RealIntervalSet class
 """
 
 import unittest
 
-from clothesline import IntervalSet
+from clothesline import RealIntervalSet
 from clothesline.interval_peg import IntervalPeg
-from clothesline.interval import Interval
+from clothesline.real_interval import RealInterval
 from clothesline.algebra.symbols import PlusInf, MinusInf
 
 
 class TestIntervalSet(unittest.TestCase):
     """
-    Tests for the IntervalSet
+    Tests for the RealIntervalSet
     """
 
     @classmethod
     def setUpClass(cls):
-        cls.is_utils = IntervalSet.utils()
-        cls.int_utils = Interval.utils()
-        cls.is1 = IntervalSet(
+        cls.is_utils = RealIntervalSet.utils()
+        cls.int_utils = RealInterval.utils()
+        cls.is1 = RealIntervalSet(
             [
                 cls.int_utils.open(11, 13),
                 cls.int_utils.closed(10, 12),
@@ -27,7 +27,7 @@ class TestIntervalSet(unittest.TestCase):
                 cls.int_utils.interval(13, False, 14, True),
             ]
         )
-        cls.is2 = IntervalSet(
+        cls.is2 = RealIntervalSet(
             [
                 cls.int_utils.open(10, 11),
                 cls.int_utils.closed(12, 13),
@@ -50,12 +50,12 @@ class TestIntervalSet(unittest.TestCase):
             cls.int_utils.closed(10, 14),
             cls.int_utils.high_slice(15),
         ]
-        cls.isx1 = IntervalSet([
+        cls.isx1 = RealIntervalSet([
             cls.int_utils.low_slice(-4),
             cls.int_utils.closed(-3, -1),
             cls.int_utils.interval(2, True, 3, False),
         ])
-        cls.isx2 = IntervalSet([
+        cls.isx2 = RealIntervalSet([
             cls.int_utils.interval(-5, True, -2, False),
             cls.int_utils.interval(-1, False, 2, True),
             cls.int_utils.high_slice(3),
@@ -63,20 +63,20 @@ class TestIntervalSet(unittest.TestCase):
 
     def test_equals(self):
         """Equality between interval sets."""
-        int_split_closed = IntervalSet(
+        int_split_closed = RealIntervalSet(
             [self.int_utils.closed(10, 11), self.int_utils.closed(11, 12)]
         )
-        int_whole_closed = IntervalSet([self.int_utils.closed(10, 12)])
+        int_whole_closed = RealIntervalSet([self.int_utils.closed(10, 12)])
         self.assertTrue(int_split_closed == int_whole_closed)
-        int_split_open = IntervalSet([self.int_utils.open(10, 11), self.int_utils.open(11, 12)])
-        int_whole_open = IntervalSet([self.int_utils.open(10, 12)])
+        int_split_open = RealIntervalSet([self.int_utils.open(10, 11), self.int_utils.open(11, 12)])
+        int_whole_open = RealIntervalSet([self.int_utils.open(10, 12)])
         self.assertFalse(int_split_open == int_whole_open)
-        int_wider_open = IntervalSet([self.int_utils.open(10, 12.5)])
+        int_wider_open = RealIntervalSet([self.int_utils.open(10, 12.5)])
         self.assertFalse(int_whole_open == int_wider_open)
-        int_split_higher = IntervalSet(
+        int_split_higher = RealIntervalSet(
             [self.int_utils.closed(10, 12), self.int_utils.high_slice(11)]
         )
-        int_whole_higher = IntervalSet([self.int_utils.high_slice(10, True)])
+        int_whole_higher = RealIntervalSet([self.int_utils.high_slice(10, True)])
         self.assertTrue(int_split_higher == int_whole_higher)
 
     def test_contains(self):
@@ -103,7 +103,7 @@ class TestIntervalSet(unittest.TestCase):
         )
 
     def test_union(self):
-        """Union between IntervalSet instances."""
+        """Union between RealIntervalSet instances."""
         self.assertEqual(
             (self.is1 + self.is2)._intervals,
             self.exp_u_ints,
@@ -114,10 +114,10 @@ class TestIntervalSet(unittest.TestCase):
         )
 
     def test_difference(self):
-        """Difference between IntervalSet instances."""
+        """Difference between RealIntervalSet instances."""
         self.assertEqual(
             self.is_utils.open(-2, 2) - self.is_utils.open(-1, 1),
-            IntervalSet(
+            RealIntervalSet(
                 [
                     self.int_utils.interval(-2, False, -1, True),
                     self.int_utils.interval(1, True, 2, False),
@@ -126,16 +126,16 @@ class TestIntervalSet(unittest.TestCase):
         )
         self.assertEqual(
             self.is_utils.open(5, 7)
-            - IntervalSet([self.int_utils.open(5, 6), self.int_utils.interval(6, True, 7, False)]),
+            - RealIntervalSet([self.int_utils.open(5, 6), self.int_utils.interval(6, True, 7, False)]),
             self.is_utils.empty(),
         )
         self.assertEqual(
-            IntervalSet([self.int_utils.open(5, 7)]) - IntervalSet([self.int_utils.open(4, 8)]),
+            RealIntervalSet([self.int_utils.open(5, 7)]) - RealIntervalSet([self.int_utils.open(4, 8)]),
             self.is_utils.empty(),
         )
 
     def test_intersection(self):
-        """Intersection between IntervalSet instances."""
+        """Intersection between RealIntervalSet instances."""
         self.assertEqual(
             self.is_utils.open(0, 2).intersect(self.is_utils.open(1, 3)),
             self.is_utils.open(1, 2),
@@ -155,7 +155,7 @@ class TestIntervalSet(unittest.TestCase):
 
     def test_xor(self):
         """XOR between interval sets."""
-        x_exp = IntervalSet([
+        x_exp = RealIntervalSet([
             self.int_utils.low_slice(-5),
             self.int_utils.interval(-4, True, -3, False),
             self.int_utils.interval(-2, True, 2, False),
@@ -173,7 +173,7 @@ class TestIntervalSet(unittest.TestCase):
 
     def test_complement(self):
         """Complement of an interval set."""
-        c_exp = IntervalSet([
+        c_exp = RealIntervalSet([
             self.int_utils.interval(-4, True, -3, False),
             self.int_utils.open(-1, 2),
             self.int_utils.high_slice(3, True),
@@ -184,15 +184,15 @@ class TestIntervalSet(unittest.TestCase):
         )
 
     def test_spurious_equality(self):
-        """Interval is never IntervalSet."""
+        """RealInterval is never RealIntervalSet."""
         self.assertNotEqual(
             self.int_utils.open(0, 1),
             self.is_utils.open(0, 1),
         )
 
     def test_hybrid_set_operations(self):
-        """Set-operations allowed with an Interval as second operand."""
-        iset = IntervalSet([self.int_utils.open(-2, -1), self.int_utils.high_slice(1)])
+        """Set-operations allowed with an RealInterval as second operand."""
+        iset = RealIntervalSet([self.int_utils.open(-2, -1), self.int_utils.high_slice(1)])
         self.assertEqual(
             iset + self.int_utils.closed(-1, 1),
             self.is_utils.high_slice(-2),
@@ -207,7 +207,7 @@ class TestIntervalSet(unittest.TestCase):
         )
         self.assertEqual(
             iset.xor(self.int_utils.closed(-2, -1)),
-            IntervalSet([
+            RealIntervalSet([
                 self.int_utils.point(-2),
                 self.int_utils.point(-1),
                 self.int_utils.high_slice(1),
@@ -217,22 +217,22 @@ class TestIntervalSet(unittest.TestCase):
     def test_superset_of(self):
         """Test of the 'superset_of' boolean test."""
         self.assertTrue(self.is1.superset_of(self.is_utils.empty()))
-        self.assertTrue(self.is1.superset_of(IntervalSet([
+        self.assertTrue(self.is1.superset_of(RealIntervalSet([
             self.int_utils.open(11, 12),
         ])))
-        self.assertTrue(self.is1.superset_of(IntervalSet([
+        self.assertTrue(self.is1.superset_of(RealIntervalSet([
             self.int_utils.point(14),
             self.int_utils.closed(17, 19),
         ])))
         self.assertFalse(self.is1.superset_of(self.is_utils.point(13)))
-        self.assertFalse(self.is1.superset_of(IntervalSet([
+        self.assertFalse(self.is1.superset_of(RealIntervalSet([
             self.int_utils.open(11, 13),
             self.int_utils.closed(13, 14),
         ])))
 
     def test_builder(self):
         """Builder syntax: must yield the same as explicit creation."""
-        b = IntervalSet.builder()
+        b = RealIntervalSet.builder()
         self.assertEqual(
             b[10](13) + b(13)[14] + b(15)[...],
             self.is1,
@@ -243,7 +243,7 @@ class TestIntervalSet(unittest.TestCase):
         )
 
     def test_hash(self):
-        """IntervalSet's hash function"""
+        """RealIntervalSet's hash function"""
         self.assertTrue(
             len(
                 {

@@ -5,7 +5,7 @@ Tests for the metric enrichment for interval sets*
 import unittest
 from datetime import datetime, timedelta
 
-from clothesline import IntervalSet
+from clothesline import RealIntervalSet
 from clothesline import DatetimeIntervalSet
 from clothesline.algebra.symbols import PlusInf, MinusInf
 from clothesline.enriched.string_interval_set import StringIntervalSet, StringInterval
@@ -15,16 +15,16 @@ from clothesline.exceptions import MetricNotImplementedError
 
 class TestIntervalSetMetric(unittest.TestCase):
     """
-    Tests for the metric of IntervalSet.
+    Tests for the metric of RealIntervalSet.
     """
 
     @classmethod
     def setUpClass(cls):
-        cls.utils = IntervalSet.utils()
-        cls.builder = IntervalSet.builder()
+        cls.utils = RealIntervalSet.utils()
+        cls.builder = RealIntervalSet.builder()
 
     def test_interval_lengths(self):
-        """IntervalSet's extension() method."""
+        """RealIntervalSet's extension() method."""
         is1 = self.builder[0](2)            \
             + self.builder(1)[5]            \
             + self.utils.open(100, 150)     \

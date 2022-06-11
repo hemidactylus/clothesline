@@ -13,25 +13,18 @@ to non-serializable.
 Please refer to the Datetime case for relevant comments on the structure.
 """
 
-from clothesline import IntervalSet
-from clothesline.interval import Interval
+from clothesline.base.base_interval_set import BaseIntervalSet
+from clothesline.base.base_interval import BaseInterval
 
 from clothesline.generic.interval_generic_builder import IntervalGenericBuilder
 from clothesline.generic.interval_generic_utils import IntervalGenericUtils
 from clothesline.generic.interval_set_generic_utils import IntervalSetGenericUtils
 
 
-class StringInterval(Interval):
+class StringInterval(BaseInterval):
     """
     Intervals between strings.
     """
-
-    metric = None
-
-    value_encoder = None
-    value_decoder = None
-    serializing_class = None
-    serializing_version = None
 
     @staticmethod
     def builder():
@@ -51,15 +44,12 @@ class StringInterval(Interval):
         return IntervalGenericUtils(interval_class=StringInterval)
 
 
-class StringIntervalSet(IntervalSet):
+class StringIntervalSet(BaseIntervalSet):
     """
     A string-interval-set.
     """
 
     interval_class = StringInterval
-
-    serializing_class = None
-    serializing_version = None
 
     @staticmethod
     def builder():

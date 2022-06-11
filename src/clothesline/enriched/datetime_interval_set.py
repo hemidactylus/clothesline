@@ -11,15 +11,15 @@ will stay in the correct domain.
 
 import datetime
 
-from clothesline import IntervalSet
-from clothesline.interval import Interval
-from clothesline.domain_metric import DomainMetric
+from clothesline.base.base_interval_set import BaseIntervalSet
+from clothesline.base.base_interval import BaseInterval
+from clothesline.base.base_domain_metric import BaseDomainMetric
 
 from clothesline.generic.interval_generic_builder import IntervalGenericBuilder
 from clothesline.generic.interval_generic_utils import IntervalGenericUtils
 from clothesline.generic.interval_set_generic_utils import IntervalSetGenericUtils
 
-class DatetimeMetric(DomainMetric):
+class DatetimeMetric(BaseDomainMetric):
 
     def adder(v1, v2): return v1 + v2
 
@@ -28,7 +28,7 @@ class DatetimeMetric(DomainMetric):
     zero = datetime.timedelta(0)
 
 
-class DatetimeInterval(Interval):
+class DatetimeInterval(BaseInterval):
     """
     Domain-specific interval subclass.
     Below are the methods that one should override when creating a subclass.
@@ -69,7 +69,7 @@ class DatetimeInterval(Interval):
         return IntervalGenericUtils(interval_class=DatetimeInterval)
 
 
-class DatetimeIntervalSet(IntervalSet):
+class DatetimeIntervalSet(BaseIntervalSet):
     """
     Domain-specific interval-set subclass.
     Below are the methods that one should override when creating a subclass.

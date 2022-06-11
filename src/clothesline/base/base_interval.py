@@ -2,12 +2,34 @@
 A single interval with a begin and and end, either open or closed at its ends.
 """
 
-from clothesline.algebra.symbols import is_symbol, x_equals, x_lt, x_gt, x_repr, x_subtract
+from clothesline.algebra.symbols import (
+    is_symbol,
+    x_equals,
+    x_lt,
+    x_gt,
+    x_repr,
+    x_subtract,
+)
 #
-from clothesline.exceptions import InvalidValueError, MetricNotImplementedError, UnserializableItemError
+from clothesline.exceptions import (
+    InvalidValueError,
+    MetricNotImplementedError,
+    UnserializableItemError,
+)
 
 
 class BaseInterval():
+    """
+    A single uninterrupted interval over the domain field:
+        [a,b] or (a,b) or (a,b] or [a,b)
+    defined by two IntervalPeg objects. It can span to infinities.
+
+    Concrete classes must provide builder() and utils() in a standard way
+    (see the real-interval case) and, if desired,
+    define metric and serializability properties as well.
+    """
+
+    # What follows should be considered by subclassers:
 
     metric = None
 
@@ -20,12 +42,12 @@ class BaseInterval():
     @staticmethod
     def builder():
         """Create and return a "builder" for these intervals."""
-        ...
 
     @staticmethod
     def utils():
         """Create an "interval utils" object for these intervals."""
-        ...
+
+    # Subclassers may stop reading here.
 
     def __init__(self, begin, end):
         """
@@ -44,7 +66,7 @@ class BaseInterval():
         self.end = end
 
     def __eq__(self, other):
-        if isinstance(other, self.__class__):
+        if isinstance(other, self.__class__):  # noqa: PLR1705
             return self.begin == other.begin and self.end == other.end
         else:
             return False
@@ -53,17 +75,17 @@ class BaseInterval():
         return hash((self.__class__, hash(self.begin), hash(self.end)))
 
     def __repr__(self):
-        beginName = x_repr(self.begin.value)
-        beginParen = "[" if self.begin.included else "("
-        endName = x_repr(self.end.value)
-        endParen = "]" if self.end.included else ")"
-        return f"{beginParen}{beginName}, {endName}{endParen}"
+        begin_name = x_repr(self.begin.value)
+        begin_paren = "[" if self.begin.included else "("
+        end_name = x_repr(self.end.value)
+        end_paren = "]" if self.end.included else ")"
+        return f"{begin_paren}{begin_name}, {end_name}{end_paren}"
 
     def to_dict(self):
         """
         Return a json-encodable representation of this interval.
         """
-        if self.value_encoder:
+        if self.value_encoder:  # noqa: PLR1705
             return {
                 'class': self.serializing_class,
                 'version': self.serializing_version,
@@ -81,7 +103,7 @@ class BaseInterval():
 
         Infinities are allowed as 'value' argument, but never belong.
         """
-        if is_symbol(value):
+        if is_symbol(value):  # noqa: PLR1705
             return False
         else:
             # value is a regular number:
@@ -108,8 +130,16 @@ class BaseInterval():
                     return False
 
     def extension(self):
-        if self.metric:
-            return x_subtract(self.end.value, self.begin.value, subtracter=self.metric.subtracter)
+        """
+        If a metric is defined for this interval type,
+        use it to compute this interval's 'extension'.
+        """
+        if self.metric:  # noqa: PLR1705
+            return x_subtract(
+                self.end.value,
+                self.begin.value,
+                subtracter=self.metric.subtracter,
+            )
         else:
             raise MetricNotImplementedError
 

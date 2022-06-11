@@ -1,5 +1,5 @@
 """
-A single interval with a begin and and end, either open or closed at its ends.
+An interval on the usual numeric domain (real numbers).
 """
 
 from clothesline.base.base_interval import BaseInterval
@@ -11,28 +11,39 @@ from clothesline.real_domain_metric import RealDomainMetric
 
 class RealInterval(BaseInterval):
     """
-    A single uninterrupted interval over the universe field:
-        [a,b] or (a,b) or (a,b] or [a,b)
-    defined by two IntervalPeg objects. It can span to infinities.
+    An interval over real numbers.
+    Both a metric and serializability are defined in the following,
+    in a prototypical way.
 
-    To allow for proper subclassing, do not mention RealInterval class
-    explicitly except in the first two 'meta part' methods.
+    For serializability, encoder and decoder connect a value in the domain
+    (here: numbers) to something that is JSON-serializable in a deterministic
+    and bijective way, i.e.
+        encoder*decoder = identity_dicts
+        decoder*encoder = identity_domain
+    (infinities are treated automatically. no need to care about them.)
+    Serializability metadata are provided along with the codec pair: the
+    situation is the same as for RealIntervalSet (i.e. these do end up in
+    the serializable dicts), so pay attention not to change them out of a whim.
     """
 
     metric = RealDomainMetric
 
     @staticmethod
-    def value_encoder(v): return v
+    def value_encoder(val): return val  # noqa: PLC0116, PLC0321
 
     @staticmethod
-    def value_decoder(v): return v
+    def value_decoder(val): return val  # noqa: PLC0116, PLC0321
 
     serializing_class = 'RealInterval'
     serializing_version = 1
 
     @staticmethod
     def builder():
-        """Create and return a "builder" for these intervals."""
+        """
+        Create and return a "builder" for these intervals.
+        Other concrete subclasses of BaseInterval need to simply
+        replace `RealInterval` with whatever the class name.
+        """
         return IntervalGenericBuilder(
             interval_class=RealInterval,
             interval_set_class=None,
@@ -40,5 +51,9 @@ class RealInterval(BaseInterval):
 
     @staticmethod
     def utils():
-        """Create an "interval utils" object for these intervals."""
+        """
+        Create an "interval utils" object for these intervals.
+        Other concrete subclasses of BaseInterval need to simply
+        replace `RealInterval` with whatever the class name.
+        """
         return IntervalGenericUtils(interval_class=RealInterval)

@@ -6,27 +6,28 @@ serializability of its values.
 
 from clothesline.base.base_interval_set import BaseIntervalSet
 from clothesline.generic.interval_generic_builder import IntervalGenericBuilder
-from clothesline.generic.interval_set_generic_utils import IntervalSetGenericUtils
+from clothesline.generic.interval_set_generic_utils import IntervalSetGenericUtils  # noqa: E501
 #
 from clothesline.real_interval import RealInterval
 
 
 class RealIntervalSet(BaseIntervalSet):
     """
-    A portion of the continuous line (e.g. the reals + infinities)
-    defined by an arbitrary (finite) number of RealInterval objects.
+    A set over the real numbers, such as:
+        (-inf, -5] U (-3, 3) U [4, 8)
 
-    References to `RealIntervalSet` itself are to be limited and controlled,
-    so that a superclass (e.g. providing special metric/serialization etc) has
-    no trouble.
+    Interval sets over the reals are made of "RealInterval" objects,
+    which is stated in the `interval_class` member.
+    Also the builder() and utils() methods are defined in a standard way,
+    which acts as reference for custom implementations as well.
 
-    Richer classes with metric/serializability requirements have to
-    subclass this one and just redefine builder(), utils() and a few properties
-    which are the only places where explicit class references
-    (for instantiation) can be used.
+    Note a reference to the class of "intervals making up these
+    sets" is configured.
+
+    Additionally, metadata for serializability are specified below:
+    these two (class name and version) end up in the serializable dict
+    to handle future 'schema changes', if there ever will be.
     """
-
-    ## "Meta part", i.e. items to override when subclassing.
 
     interval_class = RealInterval
 
@@ -37,6 +38,7 @@ class RealIntervalSet(BaseIntervalSet):
     def builder():
         """
         Create an interval set builder.
+        Other implementation need to simply replace `RealIntervalSet` here.
         """
         return IntervalGenericBuilder(
             interval_set_class=RealIntervalSet,
@@ -45,7 +47,8 @@ class RealIntervalSet(BaseIntervalSet):
     @staticmethod
     def utils():
         """
-        Create an "utils" object, offering standard intervalset* creation.
+        Create an "utils" object, which offers standard intervalset* creation.
+        Other implementation need to simply replace `RealIntervalSet` here.
         """
         return IntervalSetGenericUtils(
             interval_set_class=RealIntervalSet,

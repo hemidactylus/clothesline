@@ -7,15 +7,24 @@ is set per-instance, so this serves as a generic class template.
 from clothesline.interval_peg import IntervalPeg
 from clothesline.algebra.symbols import PlusInf, MinusInf
 
-from clothesline.exceptions import UnparseableDictError, UnserializableItemError, UnsupportedVersionDictError
+from clothesline.exceptions import (
+    UnparseableDictError,
+    UnserializableItemError,
+    UnsupportedVersionDictError,
+)
 
 
 class IntervalGenericUtils:
+    """
+    An "interval utils" class. Instances of this, properly initialized
+    with the name of the interval class to create, are able to produce several
+    'standard' intervals such as "all", "open set" and so on.
+    """
 
     def __init__(self, interval_class):
         """
         When creating an utils instance, which can create intervals*,
-        the interval_class that must be passed is a function (constructor)
+        the interval_class that must be passed is a function (a constructor)
         that makes its two arguments (peg0, peg1) into an interval of the
         desired type.
         """
@@ -25,6 +34,13 @@ class IntervalGenericUtils:
         self.serializing_version = self.interval_class.serializing_version
 
     def from_dict(self, input_dict):
+        """
+        Using the information in the interval class, convert a dict
+        (supposedly generate from an interval of this same type)
+        back into an interval.
+        This function takes care of injecting decoders to the lower-level
+        (i.e. peg-level) from_dict function invocations.
+        """
         if not self.value_decoder:
             raise UnserializableItemError
         if input_dict.get('class') != self.serializing_class:
@@ -32,11 +48,17 @@ class IntervalGenericUtils:
         # Here, in the future, version upgrade logic will be injected
         if input_dict.get('version', 0) > self.serializing_version:
             raise UnsupportedVersionDictError
-        if input_dict.get('version') != self.serializing_version: 
+        if input_dict.get('version') != self.serializing_version:
             raise UnparseableDictError
         return self.interval_class(
-            IntervalPeg.from_dict(input_dict['pegs'][0], v_decoder=self.value_decoder),
-            IntervalPeg.from_dict(input_dict['pegs'][1], v_decoder=self.value_decoder),
+            IntervalPeg.from_dict(
+                input_dict['pegs'][0],
+                v_decoder=self.value_decoder,
+            ),
+            IntervalPeg.from_dict(
+                input_dict['pegs'][1],
+                v_decoder=self.value_decoder,
+            ),
         )
 
     def open(self, value_begin, value_end):

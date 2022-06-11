@@ -4,6 +4,7 @@ Defines symbols for extension to +/- infinity and related methods.
 
 from clothesline.exceptions import IndeterminateFormError, UnparseableDictError
 
+
 class PlusInf:  # noqa: PLR0903
     """
     Symbolic constant for "+infinity"
@@ -35,7 +36,7 @@ def x_repr(val):
     """
     String representation
     """
-    if is_symbol(val):
+    if is_symbol(val):  # noqa: PLR1705
         return val.__repr__()
     else:
         return val.__repr__()
@@ -45,7 +46,7 @@ def x_to_dict(value, v_encoder):
     """
     Return a json-encodable representation of this extended 'value'.
     """
-    if is_symbol(value):
+    if is_symbol(value):  # noqa: PLR1705
         return {'symbol': value.__repr__()}
     else:
         # "ordinary value"
@@ -53,8 +54,12 @@ def x_to_dict(value, v_encoder):
 
 
 def x_from_dict(input_dict, v_decoder):
-    if 'symbol' in input_dict:
-        if input_dict['symbol'] == PlusInf.__repr__():
+    """
+    Extract a extended value from a dictionary item, leveraging the passed
+    decoder.
+    """
+    if 'symbol' in input_dict:  # noqa: PLR1705
+        if input_dict['symbol'] == PlusInf.__repr__():  # noqa: PLR1705
             return PlusInf
         elif input_dict['symbol'] == MinusInf.__repr__():
             return MinusInf
@@ -108,7 +113,7 @@ def x_cmp(val1, val2):
     """
     a valid 'cmp' to use for sorting values-and-symbols
     """
-    if x_equals(val1, val2):
+    if x_equals(val1, val2):  # noqa: PLR1705
         return 0
     else:
         return -1 if x_lt(val1, val2) else +1
@@ -128,13 +133,13 @@ def x_le(val1, val2):
     return x_equals(val1, val2) or x_lt(val1, val2)
 
 
-def x_sum(val1, val2, adder):
+def x_sum(val1, val2, adder):  # noqa: PLR0911
     """
     Sum of two values.
     Will raise an error if the two values are the two (opposite) infinities
     """
-    if val1 is PlusInf:
-        if val2 is PlusInf:
+    if val1 is PlusInf:  # noqa: PLR1705
+        if val2 is PlusInf:  # noqa: PLR1705
             # +inf + +inf
             return PlusInf
         elif val2 is MinusInf:
@@ -144,7 +149,7 @@ def x_sum(val1, val2, adder):
             # +inf + num
             return PlusInf
     elif val1 is MinusInf:
-        if val2 is PlusInf:
+        if val2 is PlusInf:  # noqa: PLR1705, PLR1720
             # -inf + +inf
             raise IndeterminateFormError
         elif val2 is MinusInf:
@@ -154,7 +159,7 @@ def x_sum(val1, val2, adder):
             # -inf + num
             return MinusInf
     else:
-        if val2 is PlusInf:
+        if val2 is PlusInf:  # noqa: PLR1705
             # num + +inf
             return PlusInf
         elif val2 is MinusInf:
@@ -164,13 +169,14 @@ def x_sum(val1, val2, adder):
             # num + num
             return adder(val1, val2)
 
-def x_subtract(val1, val2, subtracter):
+
+def x_subtract(val1, val2, subtracter):  # noqa: PLR0911
     """
     Evaluate the difference val1 - val2.
     Will raise an error if indeterminate forms arise.
     """
-    if val1 is PlusInf:
-        if val2 is PlusInf:
+    if val1 is PlusInf:  # noqa: PLR1705
+        if val2 is PlusInf:  # noqa: PLR1705, PLR1720
             # +inf - +inf
             raise IndeterminateFormError
         elif val2 is MinusInf:
@@ -180,7 +186,7 @@ def x_subtract(val1, val2, subtracter):
             # +inf - num
             return PlusInf
     elif val1 is MinusInf:
-        if val2 is PlusInf:
+        if val2 is PlusInf:  # noqa: PLR1705
             # -inf - +inf
             return MinusInf
         elif val2 is MinusInf:
@@ -190,7 +196,7 @@ def x_subtract(val1, val2, subtracter):
             # -inf - num
             return MinusInf
     else:
-        if val2 is PlusInf:
+        if val2 is PlusInf:  # noqa: PLR1705
             # num - +inf
             return MinusInf
         elif val2 is MinusInf:

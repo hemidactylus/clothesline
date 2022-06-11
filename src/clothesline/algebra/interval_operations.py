@@ -9,7 +9,8 @@ from clothesline.interval_peg import IntervalPeg
 from clothesline.exceptions import InvalidCombineEndState
 
 
-def combine_intervals(int_maker, interval_iterables, combiner_function=lambda q: q[0]):
+def combine_intervals(int_maker, interval_iterables,  # noqa: PLR0914, PLR0912
+                      combiner_function=lambda q: q[0]):
     """
     The main workhorse for interval algebra.
     A list of N iterables over intervals is combined according to some
@@ -45,7 +46,10 @@ def combine_intervals(int_maker, interval_iterables, combiner_function=lambda q:
     N > 2 will presumably never be used.
     """
 
-    interval_lists = [list(interval_ite) for interval_ite in interval_iterables]
+    interval_lists = [
+        list(interval_ite)
+        for interval_ite in interval_iterables
+    ]
     n_i_lists = len(interval_lists)
 
     # 1. 'split' phase
@@ -102,11 +106,11 @@ def combine_intervals(int_maker, interval_iterables, combiner_function=lambda q:
 
     # # 3. 'merge' phase
     final_intervals = []
-    i_buffer = None  # a mutable state
+    i_buffer = []  # a mutable state
     for m_index, marker in enumerate(markers):
         next_is_range = range_merged[marker]
         point_included = point_merged[marker]
-        if i_buffer is None:
+        if not i_buffer:
             if next_is_range:
                 i_buffer = [(marker, point_included), None]
             else:
@@ -146,9 +150,9 @@ def combine_intervals(int_maker, interval_iterables, combiner_function=lambda q:
                         IntervalPeg(i_buffer[1][0], i_buffer[1][1]),
                     )
                 )
-                i_buffer = None
+                i_buffer = []
     #
-    if i_buffer is not None:
+    if i_buffer:
         raise InvalidCombineEndState("Inconsistent end state in merge phase")
 
     return final_intervals

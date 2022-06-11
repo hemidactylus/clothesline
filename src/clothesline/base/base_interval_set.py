@@ -1,7 +1,5 @@
 """
-An arbitrary set defined by a finite number of intervals.
-This is the base form, which has no metric imposed and assumes trivial
-serializability of its values.
+Any set over the domain, defined by a finite number of intervals.
 """
 
 from functools import reduce
@@ -13,6 +11,18 @@ from clothesline.exceptions import MetricNotImplementedError
 
 
 class BaseIntervalSet:
+    """
+    Any portion of the "continuous line" that is the domain
+    (such as the reals + infinities), defined by an arbitrary (finite) number
+    of intervals.
+
+    Any concrete implementation has to provide: a `builder()` and a `utils()`
+    (in a pretty standard way, see e.g. the reference "real*" implementation),
+    as well as to give the name of the class representing the individual
+    intervals this set is made of.
+    Moreover, serializing signature data can be provided (if so desired and if
+    serializability is supported by the underlying interval implementation).
+    """
 
     interval_class = None
 
@@ -24,14 +34,12 @@ class BaseIntervalSet:
         """
         Create an interval set builder.
         """
-        ...
 
     @staticmethod
     def utils():
         """
         Create an "utils" object, offering standard intervalset* creation.
         """
-        ...
 
     def __init__(self, intervals):
         self._intervals = self._normalize(intervals)
@@ -66,8 +74,17 @@ class BaseIntervalSet:
         return any(interval.contains(value) for interval in self._intervals)
 
     def extension(self):
-        if self.interval_class.metric:
-            def c_sum(v1, v2): return x_sum(v1, v2, self.interval_class.metric.adder)
+        """
+        If a metric is defined for this interval type,
+        use it to compute this interval set's (overall) 'extension'.
+        """
+        if self.interval_class.metric:  # noqa: PLR1705
+            def c_sum(val1, val2):
+                return x_sum(
+                    val1,
+                    val2,
+                    self.interval_class.metric.adder,
+                )
             return reduce(
                 c_sum,
                 (interval.extension() for interval in self._intervals),
@@ -75,7 +92,7 @@ class BaseIntervalSet:
             )
         else:
             raise MetricNotImplementedError
- 
+
     def __eq__(self, other):
         return (
             isinstance(other, self.__class__)
@@ -93,10 +110,13 @@ class BaseIntervalSet:
         ))
 
     def __repr__(self):
-        if self._intervals == []:
+        if not self._intervals:  # noqa: PLR1705
             return "{}"
         else:
-            return " U ".join(interval.__repr__() for interval in self._intervals)
+            return " U ".join(
+                interval.__repr__()
+                for interval in self._intervals
+            )
 
     def __add__(self, other):
         """Alias for set-wise union."""

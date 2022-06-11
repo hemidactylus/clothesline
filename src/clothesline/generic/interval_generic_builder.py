@@ -12,6 +12,7 @@ both intervals* and intervalsets* (depending on how initialized).
 from clothesline.algebra.symbols import PlusInf, MinusInf
 from clothesline.interval_peg import IntervalPeg
 
+
 class IntervalGenericBuilder():
     """
     A builder for some kind of intervals.
@@ -61,13 +62,16 @@ class IntervalGenericBuilder():
         two pegs).
         Alternatively, to have the builder create intervalsets*, one passes
         the class for the corresponding intervalset*.
-        Internally, suitable "finalizers" are crafted out of these inputs.
+        Internally, suitable "finalizers" are crafted out of these inputs,
+        so that the rest of the builder usage is the same for the two paths.
         """
         if interval_set_class is None:
             self._finalizer = lambda pegs: interval_class(*pegs)
         else:
             _interval_class = interval_set_class.interval_class
-            self._finalizer = lambda pegs: interval_set_class([_interval_class(*pegs)])
+            self._finalizer = lambda pegs: interval_set_class(
+                [_interval_class(*pegs)],
+            )
 
     def _start_building(self, value, included):
         """

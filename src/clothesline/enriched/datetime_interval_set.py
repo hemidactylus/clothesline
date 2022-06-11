@@ -17,13 +17,24 @@ from clothesline.base.base_domain_metric import BaseDomainMetric
 
 from clothesline.generic.interval_generic_builder import IntervalGenericBuilder
 from clothesline.generic.interval_generic_utils import IntervalGenericUtils
-from clothesline.generic.interval_set_generic_utils import IntervalSetGenericUtils
+from clothesline.generic.interval_set_generic_utils import IntervalSetGenericUtils  # noqa: E501
+
 
 class DatetimeMetric(BaseDomainMetric):
+    """
+    The metric on the datetime domain just needs to take care
+    of the fact that differences are 'timedelta' objects.
+    """
 
-    def adder(v1, v2): return v1 + v2
+    @staticmethod
+    def adder(val1, val2):
+        """standard addition."""
+        return val1 + val2
 
-    def subtracter(v1, v2): return v1 - v2
+    @staticmethod
+    def subtracter(val1, val2):
+        """standard subtraction."""
+        return val1 - val2
 
     zero = datetime.timedelta(0)
 
@@ -39,12 +50,14 @@ class DatetimeInterval(BaseInterval):
     metric = DatetimeMetric
 
     @staticmethod
-    def value_encoder(v):
-        return v.timestamp()
+    def value_encoder(val):
+        """domain encoder: datetime => timestamp (floating-point number)."""
+        return val.timestamp()
 
     @staticmethod
-    def value_decoder(v):
-        return datetime.datetime.fromtimestamp(v)
+    def value_decoder(val):
+        """domain decoder: timestamp -> datetime."""
+        return datetime.datetime.fromtimestamp(val)
 
     serializing_class = 'DatetimeInterval'
     serializing_version = 1
@@ -77,7 +90,7 @@ class DatetimeIntervalSet(BaseIntervalSet):
     For these interval sets, values are `datetime`.
     """
 
-    interval_class=DatetimeInterval
+    interval_class = DatetimeInterval
 
     serializing_class = 'DatetimeIntervalSet'
     serializing_version = 1

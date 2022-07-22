@@ -2,7 +2,7 @@
 An example of interval/set kit that does not admit an underlying metric.
 
 String form an ordered set, with e.g.
-    "a" < "aa" < "aaa" < "aab" < "ab" < "b"
+"a" < "aa" < "aaa" < "aab" < "ab" < "b"
 and infinite new strings insertable inbetween, with no well-defined 'distance',
 
 Useful mostly as a sanity check that a metric is not assumed anywhere.

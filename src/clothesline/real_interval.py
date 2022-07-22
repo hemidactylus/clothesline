@@ -19,8 +19,9 @@ class RealInterval(BaseInterval):
     For serializability, encoder and decoder connect a value in the domain
     (here: numbers) to something that is JSON-serializable in a deterministic
     and bijective way, i.e.
-        encoder*decoder = identity_dicts
-        decoder*encoder = identity_domain
+    - encoder*decoder = identity_dicts
+    - decoder*encoder = identity_domain
+
     (infinities are treated automatically. no need to care about them.)
     Serializability metadata are provided along with the codec pair: the
     situation is the same as for RealIntervalSet (i.e. these do end up in

@@ -27,24 +27,25 @@ def combine_intervals(  # noqa: PLR0914, PLR0912
     (set-, i.e. boolean-) prescription to combine them.
 
     With a single iterable as input (N=1), i.e.
-        interval_iterables = [[int1, int2, ...]]
+    `interval_iterables = [[int1, int2, ...]]`
     these are made into a normalized-form list of intervals.
 
     With two iterables as input (N=2),
-        interval_iterables = [[intA1, intA2, ...], [intB1, intB2, ...]]
+    `interval_iterables = [[intA1, intA2, ...], [intB1, intB2, ...]]`
+
     one can achieve
-        setA U setB (default)
-        setA - setB
-        setA ^ setB
+    - setA U setB (default)
+    - setA - setB
+    - setA ^ setB
     depending on the passed combiner_function.
 
     `combiner_function` is a function from a tuple of N booleans
     to a single boolean: it specifies whether a point or an open interval
     will be in the result according to whether it was contained in each of the
     N inputs:
-        (q0, q1) => q0 or q1            # for union
-        (q0, q1) => q0 and (not q1)     # for set difference
-        (q0, q1) => q0 xor q1           # for '^'
+    - (q0, q1) => q0 or q1            # for union
+    - (q0, q1) => q0 and (not q1)     # for set difference
+    - (q0, q1) => q0 xor q1           # for '^'
 
     N > 2 will presumably never be used.
     """

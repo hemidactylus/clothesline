@@ -3,6 +3,13 @@
 Quickstart
 ==========
 
+Install
+-------
+
+Pip installation: `coming soon`.
+
+At the moment, clone-and-run-setup-py.
+
 Work with sets
 --------------
 

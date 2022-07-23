@@ -22,6 +22,6 @@ format-python:
 test-python:
 	pytest
 
-# (assumes in dev virtualenv)
+# (assumes in docs virtualenv)
 make-sphinx-doc:
-	cd ${ROOT_DIR}/docs ; make html
+	cd ${ROOT_DIR}/docs ; python -m sphinx -T -E -b html -d _build/doctrees -D language=en . _build/html

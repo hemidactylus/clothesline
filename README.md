@@ -1,3 +1,5 @@
+[![Documentation Status](https://readthedocs.org/projects/clothesline/badge/?version=latest)](https://clothesline.readthedocs.io/en/latest/?badge=latest)
+
 # clothesline
 
 A library to handle sets, made of intervals over a continuous 
@@ -16,7 +18,7 @@ set2 + set2.complement()   # (-inf, +inf)
 
 ## Quickstart
 
-_Note_: for the full documentation, visit [(coming-soon)](#).
+_Note_: for the full documentation, visit [`clothesline.readthedocs.io`](https://clothesline.readthedocs.io).
 
 ### Work with sets
 
@@ -91,7 +93,7 @@ print(timespan1.complement())
 print(timespan1.extension())
 ```
 
-That's it! For more, check the [full documentation](#).
+That's it! For more, check the [full documentation](https://clothesline.readthedocs.io).
 
 ## Contributing
 

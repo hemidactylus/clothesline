@@ -22,7 +22,7 @@ from clothesline.exceptions import (
 class BaseInterval:
     """
     A single uninterrupted interval over the domain field:
-        [a,b] or (a,b) or (a,b] or [a,b)
+    [a,b] or (a,b) or (a,b] or [a,b)
     defined by two IntervalPeg objects. It can span to infinities.
 
     Concrete classes must provide builder() and utils() in a standard way

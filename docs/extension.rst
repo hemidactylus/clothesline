@@ -1,6 +1,6 @@
 .. _extension:
 
-Extension
+Customize
 =========
 
 It is possible to create new classes to operate

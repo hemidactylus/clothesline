@@ -96,8 +96,8 @@ class BaseIntervalSet:
     def __eq__(self, other):
         return (
             isinstance(other, self.__class__)
-            and len(self._intervals) == len(other._intervals)
-            and self._intervals == other._intervals
+            and len(self._intervals) == len(other._intervals)  # noqa: W503
+            and self._intervals == other._intervals  # noqa: W503
         )
 
     def __hash__(self):

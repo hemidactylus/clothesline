@@ -9,7 +9,7 @@ General overview of the internal structure of the project.
 .. https://stackoverflow.com/questions/34052582/how-do-i-refer-to-classes-and-methods-in-other-files-my-project-with-sphinx
 
 The core of the set operations lies in this method:
-:py:func:`clothesline.algebra.interval_operations.combine_intervals`.
+:py:func:`algebra.interval_operations.combine_intervals`.
 
 .. note::
   **Coming soon**.

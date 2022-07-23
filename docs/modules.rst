@@ -4,4 +4,8 @@ clothesline
 .. toctree::
    :maxdepth: 4
 
-   clothesline
+   algebra
+   base
+   enriched
+   exceptions
+   generic

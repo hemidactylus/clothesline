@@ -10,7 +10,7 @@ between a "minus infinity" and a "plus infinity" of some kind.
 
 Here's a short tutorial, with reference to the example :code:`StringIntervalSet`.
 
-See :py:class:`clothesline.enriched.string_interval_set.StringIntervalSet`
+See :py:class:`enriched.string_interval_set.StringIntervalSet`
 
 .. note::
   **Coming soon**.

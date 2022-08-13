@@ -16,6 +16,8 @@ set2.complement()          # (-inf, -10) U (0, 1] U [10, 100)
 set2 + set2.complement()   # (-inf, +inf)
 ```
 
+<img src="https://raw.githubusercontent.com/hemidactylus/clothesline/main/docs/_static/logo.png" width="400px" />
+
 ## Quickstart
 
 _Note_: for the full documentation, visit [`clothesline.readthedocs.io`](https://clothesline.readthedocs.io).

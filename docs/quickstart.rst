@@ -6,9 +6,9 @@ Quickstart
 Install
 -------
 
-Pip installation: `coming soon`.
+.. code-block:: shell
 
-At the moment, clone-and-run-setup-py.
+  pip install clothesline
 
 Work with sets
 --------------
@@ -18,14 +18,14 @@ The library provides ready-to-use
 and :code:`DatetimeIntervalSet` for date intervals.
 
 Start by importing the library and getting a :code:`builder`
-for interval sets on the real line:
+for Interval Sets on the real line:
 
 .. code-block:: python
 
   import clothesline
   bld = clothesline.RealIntervalSet.builder()
 
-Create a couple of intervals:
+Create a couple of Interval Sets:
 
 .. code-block:: python
 
@@ -61,7 +61,7 @@ For more ways to create and manipulate sets, have a look at the :ref:`user_guide
 Store and retrieve
 ------------------
 
-You can convert any interval set into a string (e.g. to store it into
+You can convert any Interval Set into a string (e.g. to store it into
 a database) and re-hydrate it later:
 
 .. code-block:: python

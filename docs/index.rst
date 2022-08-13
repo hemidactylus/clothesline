@@ -25,6 +25,10 @@ Then you may be interested in the :ref:`user_guide`.
 To build your own extension (covering a custom domain), see :ref:`extension`
 (which does not require knowledge of the :ref:`structure`).
 
+.. image:: _static/logo.png
+  :width: 400
+  :alt: Alternative text
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:

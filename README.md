@@ -2,6 +2,10 @@
 
 # clothesline
 
+```
+pip install clothesline
+```
+
 A library to handle sets, made of intervals over a continuous 
 infinite axis (a "domain") such as the real numbers or date/times.
 
